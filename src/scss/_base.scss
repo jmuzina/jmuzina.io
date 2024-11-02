@@ -1,0 +1,5 @@
+@use "base_typography";
+
+@mixin jm-base {
+  @include base_typography.jm-typography;
+}

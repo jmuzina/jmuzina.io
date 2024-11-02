@@ -1,0 +1,8 @@
+@use "settings";
+@use "base";
+@use "components";
+
+@mixin jmuzina-io {
+  @include base.jm-base;
+  @include components.jm-components;
+}
