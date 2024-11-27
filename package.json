@@ -6,27 +6,21 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "pnpm run lint:styles && pnpm run lint:next",
-    "lint:fix": "pnpm run lint:styles:fix && pnpm run lint:next:fix",
-    "lint:next": "next lint",
-    "lint:next:fix": "next lint --fix",
-    "lint:styles": "stylelint src/**/*.scss",
-    "lint:styles:fix": "stylelint src/**/*.scss --fix"
+    "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "next": "15.0.1"
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "next": "15.0.3"
   },
   "devDependencies": {
+    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
     "eslint": "^8",
-    "eslint-config-next": "15.0.1",
-    "sass": "^1.80.4",
-    "stylelint": "^16.10.0",
-    "stylelint-config-standard-scss": "^13.1.0",
-    "typescript": "^5"
+    "eslint-config-next": "15.0.3"
   }
 }

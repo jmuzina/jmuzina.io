@@ -1,5 +1,24 @@
 import type { Metadata } from "next";
-import "../scss/index.scss";
+import localFont from "next/font/local";
+import "./globals.css";
+
+const oxygenBold = localFont({
+  src: "./fonts/oxygen/Oxygen-Bold.ttf",
+  variable: "--font-oxygen-bold",
+  weight: "700",
+});
+
+const oxygenRegular = localFont({
+  src: "./fonts/oxygen/Oxygen-Regular.ttf",
+  variable: "--font-oxygen-regular",
+  weight: "400",
+});
+
+const oxygenLight = localFont({
+  src: "./fonts/oxygen/Oxygen-Light.ttf",
+  variable: "--font-oxygen-light",
+  weight: "300",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,7 +32,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body
+        className={`${oxygenRegular.variable} ${oxygenBold.variable} ${oxygenLight.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
