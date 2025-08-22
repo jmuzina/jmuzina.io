@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ClientThemeProvider } from '@/components/ClientThemeProvider';
 
 const oxygenBold = localFont({
   src: "./fonts/oxygen/Oxygen-Bold.ttf",
@@ -31,11 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${oxygenRegular.variable} ${oxygenBold.variable} ${oxygenLight.variable} antialiased`}
       >
-        {children}
+        <ClientThemeProvider>
+          {children}
+        </ClientThemeProvider>
       </body>
     </html>
   );
