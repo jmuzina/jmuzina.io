@@ -5,106 +5,102 @@ on:
     branches:
       - main
       - dev
+      - feat/*
   pull_request:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-ci-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    outputs:
+      STORE_PATH: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+    strategy:
+      matrix:
+        node: [22, 24, 26]
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node and pnpm
+        uses: pnpm/setup@v2
         with:
-          bun-version: 1.3.8
+          runtime: node@${{ matrix.node }}
+          version: 12.4.1
+          install: false # We'll try fetching from cache first.
 
-      - name: Cache node_modules
-        id: cache-node-modules
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: ./node_modules
-          key: ${{ runner.os }}-bun-node-modules-${{ hashFiles('**/bun.lock') }}
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-bun-node-modules-
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: pnpm install --frozen-lockfile # uses cache if cache hit.
 
-      - name: Build application
-        run: bun run build
+      - name: Check
+        run: pnpm run check
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Build
+        run: pnpm run build
 
       - name: Upload workspace artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
-          name: workspace
+          name: workspace-node-v${{ matrix.node }}
           path: .
-
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download workspace artifact
-        uses: actions/download-artifact@v7
-        with:
-          name: workspace
-          path: .
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.8
-
-      - name: Run checks
-        run: bun run check
-
-  lint:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download workspace artifact
-        uses: actions/download-artifact@v7
-        with:
-          name: workspace
-          path: .
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.8
-
-      - name: Run linting
-        run: bun run lint
 
   test:
     needs: build
+    strategy:
+      matrix:
+        node: [22, 24, 26]
     runs-on: ubuntu-latest
     steps:
       - name: Download workspace artifact
         uses: actions/download-artifact@v7
         with:
-          name: workspace
+          name: workspace-node-v${{ matrix.node }}
           path: .
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Cache pnpm store
+        uses: actions/cache@v4
         with:
-          bun-version: 1.3.8
+          path: ${{ needs.build.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - uses: pnpm/setup@v2
+        with:
+          runtime: node@${{ matrix.node }}
+          version: 12.4.1
+          install: false # (its in the cache)
 
       - name: Cache Playwright browsers
         id: cache-playwright
-        uses: actions/cache@v5.0.3
+        uses: actions/cache@v6.1.0
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/bun.lock') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
 
       - name: Install Playwright Browsers
-        run: bun exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run tests
-        run: bun run test
+        run: pnpm run test

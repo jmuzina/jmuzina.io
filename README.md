@@ -11,13 +11,6 @@ If you're seeing this, you've probably already done this step. Congrats!
 npx sv create my-app
 ```
 
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-bun x sv create --template minimal --types ts --add prettier eslint vitest="usages:unit,component" devtools-json paraglide="languageTags:en, es, fr, nl, zh-CN, zh-TW, ja, de, pl, it, hr, uk, ru+demo:no" mcp="ide:gemini+setup:local" storybook sveltekit-adapter="adapter:node" --install bun .
-```
-
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
