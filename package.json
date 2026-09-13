@@ -1,6 +1,10 @@
 {
 	"name": "jmuzina.io",
-	"private": true,
+	"author": {
+		"name": "Julie Mužina",
+		"email": "jmuzina@jmuzina.io"
+	},
+	"repository": "https://github.com/jmuzina/jmuzina.io",
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
@@ -26,7 +30,7 @@
 		"@eslint/js": "^9.39.2",
 		"@skeletonlabs/skeleton": "^5.0.1",
 		"@skeletonlabs/skeleton-svelte": "^5.0.1",
-		"@sveltejs/adapter-node": "^5.5.2",
+		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.50.2",
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
 		"@types/node": "^22",
