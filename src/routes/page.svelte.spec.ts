@@ -4,10 +4,11 @@ import { render } from 'vitest-browser-svelte';
 import Page from './+page.svelte';
 
 describe('/+page.svelte', () => {
-	it('should render h1', async () => {
+	it('should render h2', async () => {
 		render(Page);
 
-		const heading = page.getByRole('heading', { level: 1 });
-		await expect.element(heading).toBeInTheDocument();
+		// tbd if i even need tests for a portfolio website :)
+		const headings = page.getByRole('heading', { level: 2 });
+		expect(headings.length).toBeGreaterThan(0);
 	});
 });

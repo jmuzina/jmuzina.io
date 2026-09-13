@@ -1,42 +1,49 @@
-# sv
+# Julie Mužina's Website
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+This is my personal website.
 
-## Creating a project
+This is a work in progress.
+The old site was built with Angular a long time ago.
+It can be found [here](https://dev.jmuzina.io) ([source](https://github.com/jmuzina/portfolio)).
 
-If you're seeing this, you've probably already done this step. Congrats!
+After ~5 years I decided I wanted to rewrite it with the benefit
+of many more years of experience. It also serves as a nice test of my Svelte knowledge.
 
-```sh
-# create a new project
-npx sv create my-app
+I already think this _looks_ a lot better than the old site, so I'm deploying it as my de-facto website.
+
+Here's an inexhaustive list of other things I have a mind to add:
+
+- Blog
+- New CV
+- About page
+- Pictures of me?
+
+## Running the project
+
+This is pretty dead simple.
+After the repo is cloned, install the deps:
+
+```shell-session
+pnpm install
 ```
 
-To recreate this project with the same configuration:
+Then run the app locally:
 
-```sh
-# recreate this project
-bun x sv create --template minimal --types ts --add prettier eslint vitest="usages:unit,component" devtools-json paraglide="languageTags:en, es, fr, nl, zh-CN, zh-TW, ja, de, pl, it, hr, uk, ru+demo:no" mcp="ide:gemini+setup:local" storybook sveltekit-adapter="adapter:node" --install bun .
+```shell-session
+pnpm dev
 ```
 
-## Developing
+Before you commit, run linting & formatting checks to appease the CI (and avoid burning more resources in the cloud).
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```shell-session
+pnpm fix:all
 ```
 
-## Building
+## Tech
 
-To create a production version of your app:
+- [Svelte 5](https://svelte.dev/)
+- [Skeleton UI](https://skeleton.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [BoxIcons](https://boxicons.com/)
 
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+No artificial intelligence was used in the programming of this project.
