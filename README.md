@@ -1,35 +1,47 @@
-# sv
+# Julie Mužina's Website
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+This is my personal website.
 
-## Creating a project
+This is a work in progress.
+The old one's repo can be found [here](https://github.com/jmuzina).
+It was build a long time ago in Angular, and I wanted to rewrite it with the benefit
+of many more years of experience and as a test of my Svelte knowledge.
 
-If you're seeing this, you've probably already done this step. Congrats!
+I already think this _looks_ a lot better than the old site, so I'm deploying it as my de-facto website.
 
-```sh
-# create a new project
-npx sv create my-app
+Here's an inexhaustive list of other things I have a mind to add:
+
+- Blog
+- New CV
+- About page
+- Pictures of me?
+
+## Running the project
+
+This is pretty dead simple.
+After the repo is cloned, install the deps:
+
+```shell-session
+pnpm install
 ```
 
-## Developing
+Then run the app locally:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```shell-session
+pnpm dev
 ```
 
-## Building
+Before you commit, run linting & formatting checks to appease the CI (and avoiid burning more resources in the cloud).
 
-To create a production version of your app:
-
-```sh
-npm run build
+```shell-session
+pnpm fix:all
 ```
 
-You can preview the production build with `npm run preview`.
+## Tech
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- [Svelte 5](https://svelte.dev/)
+- [Skeleton UI](https://skeleton.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [BoxIcons](https://boxicons.com/)
+
+No artificial intelligence was used in the programming of this project.
