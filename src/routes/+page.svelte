@@ -22,7 +22,7 @@
 	<section>
 		<h2 class="text-xl">Under construction</h2>
 		<p>
-			I'm current rebuilding my portfolio from scratch! I've learned a lot since I built <a
+			I'm currently rebuilding my portfolio from scratch! I've learned a lot since I built <a
 				href="https://dev.jmuzina.io/"
 				target="_blank">the old version</a
 			> and want to build something fresher.
