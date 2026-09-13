@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton-svelte';
+@import 'renewed-orchid.css';
+
+@layer base {
+	a {
+		@apply hover:underline;
+		@apply text-brand-light dark:text-brand-dark hover:text-secondary-100  box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
+	}
+
+	p {
+		@apply mb-2;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 h5,
+	h6,
+	p,
+	section,
+	a {
+		@apply max-w-3xl;
+	}
+}

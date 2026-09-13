@@ -1,18 +1,36 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import { locales, localizeHref } from '$lib/paraglide/runtime';
-	import favicon from '$lib/assets/favicon.svg';
+	import favicon from '$lib/assets/favicon.ico';
+	import '../app.css';
+	import { Footer, Navigation } from '$lib/components';
 
 	let { children } = $props();
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head>
+	<link href={favicon} rel="icon" />
+</svelte:head>
 
-{@render children()}
-<div style="display:none">
-	{#each locales as locale (locale)}
-		<a href={localizeHref(page.url.pathname, { locale })}>
-			{locale}
-		</a>
-	{/each}
+<a
+	class="text-primary-contrast-950 no-visited-color sr-only focus-within:not-sr-only focus-within:absolute inset-s-2 inset-bs-4 z-10 bg-surface-800"
+	href="#main-content"
+>
+	Skip to main content
+</a>
+
+<div
+	class="grid md:h-screen grid-cols-1 lg:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] lg:grid-rows-[1fr_auto] gap-x-32 gap-y-8 p-8"
+>
+	<header>
+		<Navigation />
+	</header>
+	<main
+		class="outline-none overflow-auto min-h-0 row-span-2 w-full"
+		id="main-content"
+		tabindex="-1"
+	>
+		<div class="container">
+			{@render children()}
+		</div>
+	</main>
+	<Footer />
 </div>
