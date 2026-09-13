@@ -12,7 +12,7 @@
 </svelte:head>
 
 <a
-	class="no-visited-color sr-only focus-within:not-sr-only focus-within:absolute inset-s-2 inset-bs-4 z-10 bg-tertiary-800"
+	class="text-primary-contrast-950 no-visited-color sr-only focus-within:not-sr-only focus-within:absolute inset-s-2 inset-bs-4 z-10 bg-tertiary-800"
 	href="#main-content"
 >
 	Skip to main content

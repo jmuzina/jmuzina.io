@@ -7,10 +7,10 @@
 @layer base {
 	a {
 		@apply hover:underline;
-		@apply text-primary-50 hover:text-secondary-100  box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
+		@apply text-brand-light dark:text-brand-dark hover:text-secondary-100  box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
 
 		&:not(.no-visited-color) {
-			@apply visited:text-surface-400;
+			@apply visited:text-tertiary-400;
 		}
 	}
 

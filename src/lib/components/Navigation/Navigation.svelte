@@ -6,7 +6,7 @@
 	<AppBar.Toolbar class="grid-cols-[auto_1fr_auto] justify-between flex">
 		<AppBar.Lead>
 			<AppBar.Headline>
-				<a class="text-fg-brand no-visited-color text-xl flex items-center gap-2" href="/">
+				<a class="text-primary-50 no-visited-color text-xl flex items-center gap-2" href="/">
 					<!--					<HouseIcon class="inline align-baseline" />-->
 					<h1>Julie Mužina</h1>
 				</a>
