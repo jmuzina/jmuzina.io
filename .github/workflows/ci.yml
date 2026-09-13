@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - dev
-      - feat/*
   pull_request:
 
 concurrency:
@@ -35,12 +34,12 @@ jobs:
         id: pnpm-cache
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v6.1.0
         with:
-          path: ${{ env.STORE_PATH }}
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -77,7 +76,7 @@ jobs:
           path: .
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v6.1.0
         with:
           path: ${{ needs.build.outputs.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
