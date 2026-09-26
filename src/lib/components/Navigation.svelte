@@ -20,10 +20,10 @@
 	<!-- flex-1 takes remaining space, min-w-[220px] forces it to wrap when cramped -->
 	<div class="flex-1 min-w-[220px]">
 		<a class="text-brand-light dark:text-primary-300" href="/">
-			<h1 class="text-4xl">Julie Mužina</h1>
+			<h1 class="text-2xl">Julie Mužina</h1>
 		</a>
 
-		<p class="text-lg">Builder of things</p>
+		<p>Builder of things</p>
 
 		<div class="flex flex-col sm:flex-row gap-x-4 gap-y-0.5 text-sm text-primary-950-50 mt-2">
 			<div class="flex items-center gap-1">

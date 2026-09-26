@@ -5,6 +5,12 @@
 @import 'renewed-orchid.css';
 
 @layer base {
+	html {
+		@media (min-width: 1024px) {
+			font-size: 18px;
+		}
+	}
+
 	a {
 		@apply hover:underline;
 		@apply text-brand-light dark:text-brand-dark hover:text-secondary-100  box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
