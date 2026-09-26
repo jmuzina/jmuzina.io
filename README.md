@@ -14,9 +14,7 @@ I already think this _looks_ a lot better than the old site, so I'm deploying it
 Here's an inexhaustive list of other things I have a mind to add:
 
 - Blog
-- New CV
-- About page
-- Pictures of me?
+- PDF version of resume
 
 ## Running the project
 
