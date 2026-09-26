@@ -47,7 +47,7 @@
 			websiteUrl: 'https://comsat-architects.com/',
 			location: 'Rocky River, Ohio',
 			startDate: new Date('2022-07-20'),
-			endDate: new Date('2024-11-17'),
+			endDate: new Date('2023-11-17'),
 			description:
 				'Developed mission planning and data visualization\n' +
 				'applications for <a href="https://nasa.gov" rel="noopener noreferrer" target="_blank">NASA</a>.'
