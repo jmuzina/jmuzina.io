@@ -11,13 +11,17 @@ concurrency:
   group: ${{ github.workflow }}-ci-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  # main -> prod, everything else -> dev. Baked into absolute URLs at build time (see svelte.config.js).
+  SITE_ORIGIN: ${{ github.ref_name == 'main' && 'https://jmuzina.io' || 'https://dev.jmuzina.io' }}
+
 jobs:
   build:
     outputs:
       STORE_PATH: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
     strategy:
       matrix:
-        node: [26]
+        node: [24, 26]
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -73,7 +77,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        node: [26]
+        node: [24, 26]
     runs-on: ubuntu-latest
     steps:
       - name: Download workspace artifact
@@ -119,7 +123,7 @@ jobs:
     # main -> prod (jmuzina.io), dev -> dev (dev.jmuzina.io)
     environment:
       name: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
-      url: ${{ github.ref_name == 'main' && 'https://jmuzina.io' || 'https://dev.jmuzina.io' }}
+      url: ${{ env.SITE_ORIGIN }}
     steps:
       - name: Download site artifact
         uses: actions/download-artifact@v7

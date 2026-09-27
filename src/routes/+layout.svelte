@@ -1,13 +1,21 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.ico';
 	import '../app.css';
+	import { page } from '$app/state';
 	import { Footer, Navigation } from '$lib/components';
 
 	let { children } = $props();
+
+	// page.url.origin is kit.prerender.origin at build time (see svelte.config.js)
+	const canonicalUrl = $derived(new URL(page.url.pathname, page.url.origin).href);
+	const ogImageUrl = $derived(new URL('/assets/julie.jpeg', page.url.origin).href);
 </script>
 
 <svelte:head>
 	<link href={favicon} rel="icon" />
+	<link href={canonicalUrl} rel="canonical" />
+	<meta content={canonicalUrl} property="og:url" />
+	<meta content={ogImageUrl} property="og:image" />
 </svelte:head>
 
 <a
