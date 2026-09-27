@@ -4,7 +4,7 @@ This is my personal website.
 
 This is a work in progress.
 The old site was built with Angular a long time ago.
-It can be found [here](https://dev.jmuzina.io) ([source](https://github.com/jmuzina/portfolio)).
+Its source can be found [here](https://github.com/jmuzina/portfolio).
 
 After ~5 years I decided I wanted to rewrite it with the benefit
 of many more years of experience. It also serves as a nice test of my Svelte knowledge.
