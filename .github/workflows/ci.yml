@@ -17,7 +17,7 @@ jobs:
       STORE_PATH: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
     strategy:
       matrix:
-        node: [22, 24, 26]
+        node: [26]
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -73,7 +73,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        node: [22, 24, 26]
+        node: [26]
     runs-on: ubuntu-latest
     steps:
       - name: Download workspace artifact
