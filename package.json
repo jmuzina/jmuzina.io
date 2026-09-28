@@ -30,7 +30,7 @@
 		"@boxicons/svelte": "^1.0.1",
 		"@eslint/compat": "^2.0.2",
 		"@eslint/js": "^9.39.2",
-		"@lucide/svelte": "^1.45.0",
+		"@lucide/svelte": "^1.48.0",
 		"@skeletonlabs/skeleton": "^5.0.1",
 		"@skeletonlabs/skeleton-svelte": "^5.0.1",
 		"@sveltejs/adapter-static": "^3.0.10",
