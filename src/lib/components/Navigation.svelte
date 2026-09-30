@@ -24,7 +24,7 @@
 		href="/"
 	>
 		<!-- shrink-0 ensures the image never squishes below 100px -->
-		<img alt="" class="rounded-full shrink-0" src="/assets/julie.jpeg" width="100" />
+		<img alt="" class="rounded-full shrink-0" src="/assets/julie-100.jpeg" width="75" />
 		<h1 class="text-2xl group-hover:underline group-focus-visible:underline">Julie Mužina</h1>
 	</a>
 

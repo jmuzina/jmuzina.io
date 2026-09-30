@@ -8,7 +8,7 @@
 
 	// page.url.origin is kit.prerender.origin at build time (see svelte.config.js)
 	const canonicalUrl = $derived(new URL(page.url.pathname, page.url.origin).href);
-	const ogImageUrl = $derived(new URL('/assets/julie.jpeg', page.url.origin).href);
+	const ogImageUrl = $derived(new URL('/assets/julie-100.jpeg', page.url.origin).href);
 
 	const matomoSiteId = $derived.by(() => {
 		if (page.url.origin === 'https://jmuzina.io') return '1';
