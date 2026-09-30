@@ -11,18 +11,24 @@
 	};
 
 	const navItems: NavItem[] = [];
+
+	const isHome = $derived(page.url.pathname === '/');
 </script>
 
-<div class="flex flex-wrap gap-x-4 sm:gap-x-8 gap-y-4 items-start">
-	<!-- shrink-0 ensures the image never squishes below 100px before wrapping -->
-	<img alt="" class="rounded-full shrink-0" src="/assets/julie.jpeg" width="100" />
+<div class="flex flex-col gap-y-4 items-start">
+	<!-- photo + name form a single home link (logo pattern) -->
+	<a
+		aria-current={isHome ? 'page' : undefined}
+		aria-label={isHome ? undefined : 'Julie Mužina – home'}
+		class="group flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-8 text-brand-light dark:text-primary-300 focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
+		href="/"
+	>
+		<!-- shrink-0 ensures the image never squishes below 100px -->
+		<img alt="" class="rounded-full shrink-0" src="/assets/julie.jpeg" width="100" />
+		<h1 class="text-2xl group-hover:underline group-focus-visible:underline">Julie Mužina</h1>
+	</a>
 
-	<!-- flex-1 takes remaining space, min-w-[220px] forces it to wrap when cramped -->
-	<div class="flex-1 min-w-[220px]">
-		<a class="text-brand-light dark:text-primary-300" href="/">
-			<h1 class="text-2xl">Julie Mužina</h1>
-		</a>
-
+	<div>
 		<p>Builder of things</p>
 
 		<div class="flex flex-col sm:flex-row gap-x-4 gap-y-0.5 text-sm text-primary-950-50 mt-2">
@@ -57,7 +63,7 @@
 
 <style>
 	@reference "tailwindcss";
-	a {
+	ul a {
 		&[aria-current='page'] {
 			background: var(--color-secondary-800);
 		}

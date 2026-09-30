@@ -14,34 +14,45 @@
 <footer
 	class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-gray-500 dark:text-gray-400 lg:flex-col lg:items-start lg:gap-y-2"
 >
-	<ul class="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
-		<li>
-			<a
-				aria-label="GitHub"
-				href="https://github.com/jmuzina"
-				rel="noreferrer noopener"
-				target="_blank"
-			>
-				<Github />
-			</a>
-		</li>
-		<li>
-			<a
-				aria-label="LinkedIn"
-				href="https://linkedin.com/in/jmuzina"
-				rel="noreferrer noopener"
-				target="_blank"
-			>
-				<Linkedin />
-			</a>
-		</li>
-		<li>
-			<a aria-label="Email" href="mailto:jmuzina@pm.me" rel="noreferrer noopener" target="_blank">
-				<!--				envelope icon is slightly misaligned by default -->
-				<Envelope class="mbs-1" />
-			</a>
-		</li>
-	</ul>
+	<div class="flex flex-wrap items-center gap-x-4 gap-y-2 lg:flex-col lg:items-start">
+		<ul class="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+			<li>
+				<a
+					aria-label="GitHub"
+					href="https://github.com/jmuzina"
+					rel="noreferrer noopener"
+					target="_blank"
+				>
+					<Github />
+				</a>
+			</li>
+			<li>
+				<a
+					aria-label="LinkedIn"
+					href="https://linkedin.com/in/jmuzina"
+					rel="noreferrer noopener"
+					target="_blank"
+				>
+					<Linkedin />
+				</a>
+			</li>
+			<li>
+				<a
+					aria-label="Email"
+					href="mailto:jmuzina@jmuzina.io"
+					rel="noreferrer noopener"
+					target="_blank"
+				>
+					<!--				envelope icon is slightly misaligned by default -->
+					<Envelope class="mbs-1" />
+				</a>
+			</li>
+		</ul>
+
+		<div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+			<a href="/privacy">Privacy</a>
+		</div>
+	</div>
 
 	{#if commitDate || commitSha}
 		<div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 text-right lg:text-left">

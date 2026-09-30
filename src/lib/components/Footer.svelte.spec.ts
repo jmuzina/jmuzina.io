@@ -13,6 +13,13 @@ describe('Footer.svelte', () => {
 		expect(page.getByRole('link', { name: 'Email' })).toBeDefined();
 	});
 
+	it('should link to the privacy page', async () => {
+		render(Footer);
+
+		const privacyLink = page.getByRole('link', { name: 'Privacy' });
+		expect(privacyLink.element().getAttribute('href')).toBe('/privacy');
+	});
+
 	it('should render last updated info and commit link', async () => {
 		render(Footer);
 
