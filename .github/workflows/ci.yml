@@ -138,6 +138,19 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           echo "${{ secrets.VPS_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Sync site to VPS
+      - name: Check for changed deployment
+        id: changes
         run: |
-          rsync -az --delete build/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:"
+          changes=$(rsync -azcnO --delete --itemize-changes build/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:")
+          if [ -z "$changes" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes. Skipping deployment."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "$changes"
+          fi
+
+      - name: Deploy
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          rsync -azcO --delete build/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:"
