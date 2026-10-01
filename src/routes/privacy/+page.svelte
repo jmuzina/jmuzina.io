@@ -1,3 +1,15 @@
+<script lang="ts">
+	const title = 'Privacy – Julie Mužina';
+	const description = 'Privacy policy';
+</script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta content={description} name="description" />
+	<meta content={title} property="og:title" />
+	<meta content={description} property="og:description" />
+</svelte:head>
+
 <article class="flex flex-col gap-4 max-w-prose">
 	<a
 		class="text-sm text-gray-500 dark:text-gray-300 hover:underline self-start px-1.5 -ms-1.5"
