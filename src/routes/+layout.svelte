@@ -10,11 +10,9 @@
 	const canonicalUrl = $derived(new URL(page.url.pathname, page.url.origin).href);
 	const ogImageUrl = $derived(new URL('/assets/julie-100.jpeg', page.url.origin).href);
 
-	const matomoSiteId = $derived.by(() => {
-		if (page.url.origin === 'https://jmuzina.io') return '1';
-		if (page.url.origin === 'https://dev.jmuzina.io') return '2';
-		return null;
-	});
+	const matomoEnabled = $derived(
+		page.url.origin === 'https://jmuzina.io' || page.url.origin === 'https://dev.jmuzina.io'
+	);
 </script>
 
 <svelte:head>
@@ -22,17 +20,23 @@
 	<link href={canonicalUrl} rel="canonical" />
 	<meta content={canonicalUrl} property="og:url" />
 	<meta content={ogImageUrl} property="og:image" />
-	{#if matomoSiteId}
-		<script data-matomo-site-id={matomoSiteId}>
+	{#if matomoEnabled}
+		<script>
 			var _paq = (window._paq = window._paq || []);
 			_paq.push(['disableCookies']);
 			_paq.push(['setDoNotTrack', true]);
 			_paq.push(['trackPageView']);
 			_paq.push(['enableLinkTracking']);
 			(function () {
+				var host = location.hostname;
+				if (host !== 'jmuzina.io' && host !== 'dev.jmuzina.io') return;
+				try {
+					if (localStorage.getItem('matomo-opt-out') === '1') return;
+				} catch (e) {}
 				var u = '//jmuzina.io/matomo/';
 				_paq.push(['setTrackerUrl', u + 'matomo.php']);
-				_paq.push(['setSiteId', document.currentScript.dataset.matomoSiteId]);
+				// 1 = jmuzina.io, 2 = dev.jmuzina.io
+				_paq.push(['setSiteId', host === 'jmuzina.io' ? '1' : '2']);
 				var d = document,
 					g = d.createElement('script'),
 					s = d.getElementsByTagName('script')[0];

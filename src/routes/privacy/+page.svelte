@@ -1,10 +1,3 @@
-<svelte:head>
-	<script
-		defer
-		src="https://jmuzina.io/matomo/index.php?module=CoreAdminHome&action=optOutJS&divId=matomo-opt-out&language=auto&showIntro=1"
-	></script>
-</svelte:head>
-
 <article class="flex flex-col gap-4 max-w-prose">
 	<a class="text-sm text-gray-500 dark:text-gray-300 hover:underline self-start" href="/"
 		>← Back to home</a
@@ -81,15 +74,44 @@
 	<section class="flex flex-col gap-2">
 		<h3 class="text-xl">Who is responsible</h3>
 		<p>
-			This site is run by Julie Mužina. For any privacy question or request, email
+			This site is run by Julie Mužina. For any privacy questions or requests, email
 			<a href="mailto:jmuzina@jmuzina.io">jmuzina@jmuzina.io</a>.
 		</p>
 	</section>
 
 	<section class="flex flex-col gap-2" id="opt-out">
 		<h3 class="text-xl">Opt out</h3>
-		<p>You can opt out of tracking below:</p>
-		<div id="matomo-opt-out"></div>
+		<div class="flex flex-col gap-2" hidden id="opt-out-controls">
+			<label class="flex items-center gap-2">
+				<input id="opt-out-checkbox" type="checkbox" />
+				Do not record my visits
+			</label>
+			<p class="text-sm text-gray-500 dark:text-gray-300">
+				This choice is saved in your browser's local storage, not in a cookie. Clearing site data
+				resets it.
+			</p>
+		</div>
+		<p hidden id="opt-out-unavailable">
+			Your browser is blocking local storage, so the opt-out cannot be saved. You can enable "Do Not
+			Track" in your browser instead.
+		</p>
+		<script>
+			(function () {
+				// read tracker loader defined in +layout.svelte
+				var key = 'matomo-opt-out';
+				try {
+					var checkbox = document.getElementById('opt-out-checkbox');
+					checkbox.checked = localStorage.getItem(key) === '1';
+					checkbox.addEventListener('change', function () {
+						if (checkbox.checked) localStorage.setItem(key, '1');
+						else localStorage.removeItem(key);
+					});
+					document.getElementById('opt-out-controls').hidden = false;
+				} catch (e) {
+					document.getElementById('opt-out-unavailable').hidden = false;
+				}
+			})();
+		</script>
 		<noscript>
 			<p>
 				JavaScript is disabled, so no analytics are collected from your visit. You can also enable
