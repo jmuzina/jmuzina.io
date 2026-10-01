@@ -14,7 +14,7 @@
 	const isHome = $derived(page.url.pathname === '/');
 </script>
 
-<div class="relative flex items-center gap-x-4 sm:gap-x-6">
+<div class="relative flex items-center gap-x-4 sm:gap-x-6 lg:flex-col lg:items-start lg:gap-y-4">
 	<img
 		alt=""
 		class="rounded-full shrink-0 size-16 sm:size-[75px]"
