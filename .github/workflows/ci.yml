@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - feat/**
   pull_request:
 
 concurrency:
@@ -116,9 +117,9 @@ jobs:
         run: pnpm run test
 
   deploy:
-    name: Deploy to ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
+    name: Deploy
     needs: [build, test]
-    if: github.event_name == 'push'
+    if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
     runs-on: ubuntu-24.04
     # main -> prod (jmuzina.io), dev -> dev (dev.jmuzina.io)
     environment:
