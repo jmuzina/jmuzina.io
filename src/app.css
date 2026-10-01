@@ -16,6 +16,11 @@
 		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
 	}
 
+	/* Links inline with other text need a non-color cue to be distinguishable (WCAG 1.4.1). */
+	:where(p, h1, h2, h3, h4, h5, h6) a {
+		@apply underline underline-offset-2;
+	}
+
 	p {
 		@apply mb-2;
 	}
