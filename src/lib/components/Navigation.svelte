@@ -33,7 +33,7 @@
 				Julie Mužina
 			</a>
 		</h1>
-		<p>Builder of things</p>
+		<p>Making things a little better</p>
 	</div>
 </div>
 
