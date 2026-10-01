@@ -50,7 +50,7 @@
 </svelte:head>
 
 <a
-	class="text-primary-contrast-950 no-visited-color sr-only focus-within:not-sr-only focus-within:absolute inset-s-2 inset-bs-4 z-10 bg-surface-800"
+	class="sr-only focus:not-sr-only focus:absolute inset-s-4 inset-bs-4 z-10 focus:px-4 focus:py-2 bg-surface-50-950 border border-surface-200-800 shadow-lg visited:text-brand-light dark:visited:text-brand-dark focus-visible:outline-2 focus-visible:outline-offset-2"
 	href="#main-content"
 >
 	Skip to main content
