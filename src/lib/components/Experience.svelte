@@ -97,14 +97,14 @@
 
 <!-- Master grid container wrapping both sections -->
 <div class="grid sm:grid-cols-[auto_1fr]">
-	<section class="col-span-full grid grid-cols-subgrid">
+	<section class="col-span-full grid grid-cols-subgrid mbe-2">
 		<h2 class="col-span-full text-2xl text-primary-600 dark:text-primary-100">Experience</h2>
 		<ul
 			class="col-span-full grid grid-cols-subgrid border-s-1 border-s-gray-500 dark:border-s-gray-600 ms-0.5"
 		>
 			{#each jobs as job, i (i)}
 				<li
-					class="grid grid-cols-subgrid col-span-full gap-x-8 ms-4 border-bs-gray-300 dark:border-bs-gray-700 not-first:border-bs-1"
+					class="grid grid-cols-subgrid col-span-full gap-x-8 ms-4 border-bs-gray-300 dark:border-bs-gray-700 not-first:border-bs-1 not-first:pbs-2"
 				>
 					<div class="col-start-1 text-gray-500 dark:text-gray-300">
 						{job.startDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
@@ -141,7 +141,7 @@
 		>
 			{#each educations as education, i (i)}
 				<li
-					class="grid grid-cols-subgrid col-span-full gap-x-8 ms-4 border-bs-gray-300 dark:border-bs-gray-700 not-first:border-bs-1"
+					class="grid grid-cols-subgrid col-span-full gap-x-8 ms-4 border-bs-gray-300 dark:border-bs-gray-700 not-first:border-bs-1 not-first:pbs-2"
 				>
 					<div class="col-start-1 text-gray-500 dark:text-gray-300">
 						{education.startDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
@@ -179,14 +179,3 @@
 		</ul>
 	</section>
 </div>
-
-<style>
-	@reference 'tailwindcss';
-	li:not(:first-child) {
-		@apply pbs-2;
-	}
-
-	section:not(:last-of-type) {
-		@apply mbe-2;
-	}
-</style>

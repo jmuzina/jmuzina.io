@@ -62,7 +62,6 @@
 {/if}
 
 <style>
-	@reference "tailwindcss";
 	ul a {
 		&[aria-current='page'] {
 			background: var(--color-secondary-800);

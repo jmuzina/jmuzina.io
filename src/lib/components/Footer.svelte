@@ -18,6 +18,7 @@
 		<ul class="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
 			<li>
 				<a
+					class="inline-flex text-inherit"
 					aria-label="GitHub"
 					href="https://github.com/jmuzina"
 					rel="noreferrer noopener"
@@ -28,6 +29,7 @@
 			</li>
 			<li>
 				<a
+					class="inline-flex text-inherit"
 					aria-label="LinkedIn"
 					href="https://linkedin.com/in/jmuzina"
 					rel="noreferrer noopener"
@@ -38,6 +40,7 @@
 			</li>
 			<li>
 				<a
+					class="inline-flex text-inherit"
 					aria-label="Email"
 					href="mailto:jmuzina@jmuzina.io"
 					rel="noreferrer noopener"
@@ -50,7 +53,7 @@
 		</ul>
 
 		<div class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-			<a href="/privacy">Privacy</a>
+			<a class="inline-flex" href="/privacy">Privacy</a>
 		</div>
 	</div>
 
@@ -63,7 +66,7 @@
 			{#if commitSha}
 				(<a
 					aria-label="Commit {shortSha} on GitHub"
-					class="font-mono"
+					class="inline-flex font-mono"
 					href="{githubRepoUrl}/commit/{commitSha}"
 					rel="noreferrer noopener"
 					target="_blank">{shortSha}</a
@@ -72,15 +75,3 @@
 		</div>
 	{/if}
 </footer>
-
-<style>
-	@reference 'tailwindcss';
-
-	a {
-		@apply inline-flex;
-	}
-
-	ul a {
-		color: var(--primary-50);
-	}
-</style>
