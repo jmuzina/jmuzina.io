@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import type { Component } from 'svelte';
-	import { HouseHeart, MapPin } from '@lucide/svelte';
 
 	type NavItem = {
 		key: string;
@@ -15,32 +14,26 @@
 	const isHome = $derived(page.url.pathname === '/');
 </script>
 
-<div class="flex flex-col gap-y-4 items-start">
-	<!-- photo + name form a single home link (logo pattern) -->
-	<a
-		aria-current={isHome ? 'page' : undefined}
-		aria-label={isHome ? undefined : 'Julie Mužina – home'}
-		class="group flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-8 text-brand-light dark:text-primary-300 focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm"
-		href="/"
-	>
-		<!-- shrink-0 ensures the image never squishes below 100px -->
-		<img alt="" class="rounded-full shrink-0" src="/assets/julie-100.jpeg" width="75" />
-		<h1 class="text-2xl group-hover:underline group-focus-visible:underline">Julie Mužina</h1>
-	</a>
+<div class="relative flex items-center gap-x-4 sm:gap-x-6">
+	<img
+		alt=""
+		class="rounded-full shrink-0 size-16 sm:size-[75px]"
+		src="/assets/julie-100.jpeg"
+		width="75"
+	/>
 
 	<div>
+		<h1 class="text-2xl">
+			<a
+				aria-current={isHome ? 'page' : undefined}
+				aria-label={isHome ? undefined : 'Julie Mužina – home'}
+				class="text-brand-light dark:text-primary-300 no-underline hover:underline focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm after:absolute after:inset-0 after:content-['']"
+				href="/"
+			>
+				Julie Mužina
+			</a>
+		</h1>
 		<p>Builder of things</p>
-
-		<div class="flex flex-col sm:flex-row gap-x-4 gap-y-0.5 text-sm text-primary-950-50 mt-2">
-			<div class="flex items-center gap-1">
-				<MapPin class="text-current" size="16" />
-				New York
-			</div>
-			<div class="flex items-center gap-1">
-				<HouseHeart size="16" />
-				Cleveland
-			</div>
-		</div>
 	</div>
 </div>
 

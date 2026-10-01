@@ -60,7 +60,7 @@
 	class="grid md:h-screen grid-cols-1 lg:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] lg:grid-rows-[1fr_auto]"
 >
 	<header
-		class="p-8 bg-surface-100-900 border-surface-200-800 border-be lg:border-be-0 lg:border-e"
+		class="px-6 py-4 lg:p-8 bg-surface-100-900 border-surface-200-800 border-be lg:border-be-0 lg:border-e"
 	>
 		<Navigation />
 	</header>
