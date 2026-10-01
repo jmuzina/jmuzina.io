@@ -11,13 +11,17 @@ concurrency:
   group: ${{ github.workflow }}-ci-${{ github.event.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  # main -> prod, everything else -> dev. Baked into absolute URLs at build time (see svelte.config.js).
+  SITE_ORIGIN: ${{ github.ref_name == 'main' && 'https://jmuzina.io' || 'https://dev.jmuzina.io' }}
+
 jobs:
   build:
     outputs:
       STORE_PATH: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
     strategy:
       matrix:
-        node: [22, 24, 26]
+        node: [24, 26]
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -62,11 +66,18 @@ jobs:
           name: workspace-node-v${{ matrix.node }}
           path: .
 
+      - name: Upload site artifact
+        if: matrix.node == 26
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: build
+
   test:
     needs: build
     strategy:
       matrix:
-        node: [22, 24, 26]
+        node: [24, 26]
     runs-on: ubuntu-latest
     steps:
       - name: Download workspace artifact
@@ -103,3 +114,30 @@ jobs:
 
       - name: Run tests
         run: pnpm run test
+
+  deploy:
+    name: Deploy to ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
+    needs: [build, test]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    # main -> prod (jmuzina.io), dev -> dev (dev.jmuzina.io)
+    environment:
+      name: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
+      url: ${{ env.SITE_ORIGIN }}
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: site
+          path: build
+
+      - name: Configure SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.VPS_SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Sync site to VPS
+        run: |
+          rsync -az --delete build/ "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:"

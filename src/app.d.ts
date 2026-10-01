@@ -8,6 +8,9 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	const __COMMIT_SHA__: string | undefined;
+	const __COMMIT_DATE__: string | undefined;
 }
 
 export {};
