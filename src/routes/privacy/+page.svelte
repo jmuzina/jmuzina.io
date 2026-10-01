@@ -103,8 +103,11 @@
 					var checkbox = document.getElementById('opt-out-checkbox');
 					checkbox.checked = localStorage.getItem(key) === '1';
 					checkbox.addEventListener('change', function () {
-						if (checkbox.checked) localStorage.setItem(key, '1');
-						else localStorage.removeItem(key);
+						if (checkbox.checked) {
+							localStorage.setItem(key, '1');
+							// reload so the already-loaded tracker is dropped
+							location.reload();
+						} else localStorage.removeItem(key);
 					});
 					document.getElementById('opt-out-controls').hidden = false;
 				} catch (e) {
