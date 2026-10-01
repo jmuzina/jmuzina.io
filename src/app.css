@@ -13,7 +13,7 @@
 
 	a {
 		@apply hover:underline;
-		@apply text-brand-light dark:text-brand-dark hover:text-secondary-100  box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
+		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
 	}
 
 	p {

@@ -1,6 +1,7 @@
 <article class="flex flex-col gap-4 max-w-prose">
-	<a class="text-sm text-gray-500 dark:text-gray-300 hover:underline self-start" href="/"
-		>← Back to home</a
+	<a
+		class="text-sm text-gray-500 dark:text-gray-300 hover:underline self-start px-1.5 -ms-1.5"
+		href="/">← Back to home</a
 	>
 	<h2 class="text-2xl text-primary-600 dark:text-primary-100">Privacy</h2>
 
