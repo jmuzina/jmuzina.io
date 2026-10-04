@@ -56,26 +56,24 @@
 	Skip to main content
 </a>
 
-<div
-	class="grid md:h-screen grid-cols-1 lg:grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto] lg:grid-rows-[1fr_auto]"
->
-	<header
-		class="px-6 py-4 lg:p-8 bg-surface-100-900 border-surface-200-800 border-be lg:border-be-0 lg:border-e"
-	>
-		<Navigation />
+<div class="flex min-h-svh flex-col">
+	<header class="px-6 py-3 lg:px-16 bg-surface-100-900 border-surface-200-800 border-be">
+		<div class="container mx-auto">
+			<Navigation />
+		</div>
 	</header>
 	<main
-		class="outline-none overflow-auto min-h-0 row-span-2 w-full p-8 lg:px-16"
+		class="outline-none flex grow flex-col w-full px-6 py-8 lg:px-16"
 		id="main-content"
 		tabindex="-1"
 	>
-		<div class="container">
+		<div class="container mx-auto flex grow flex-col">
 			{@render children()}
 		</div>
 	</main>
-	<div
-		class="p-8 lg:pbs-0 bg-surface-100-900 border-surface-200-800 border-bs lg:border-bs-0 lg:border-e"
-	>
-		<Footer />
+	<div class="px-6 py-6 lg:px-16 bg-surface-100-900 border-surface-200-800 border-bs">
+		<div class="container mx-auto">
+			<Footer />
+		</div>
 	</div>
 </div>

@@ -12,9 +12,9 @@
 </script>
 
 <footer
-	class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400 lg:flex-col lg:items-start lg:gap-y-2"
+	class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400"
 >
-	<div class="flex flex-wrap items-center gap-x-4 gap-y-2 lg:flex-col lg:items-start">
+	<div class="flex flex-wrap items-center gap-x-4 gap-y-2">
 		<ul class="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
 			<li>
 				<a
@@ -61,7 +61,7 @@
 	</div>
 
 	{#if commitDate || commitSha}
-		<div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-right lg:text-left">
+		<div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-right">
 			<span>Last updated</span>
 			{#if formattedDate}
 				<time datetime={commitDate}>{formattedDate}</time>

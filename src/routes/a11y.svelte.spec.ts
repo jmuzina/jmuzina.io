@@ -9,6 +9,7 @@ import { render } from 'vitest-browser-svelte';
 import appHtml from '../app.html?raw';
 import Layout from './+layout.svelte';
 import HomePage from './+page.svelte';
+import ExperiencePage from './experience/+page.svelte';
 import PrivacyPage from './privacy/+page.svelte';
 
 const appState = vi.hoisted(() => ({ page: { url: new URL('http://localhost/') } }));
@@ -18,6 +19,7 @@ vi.mock('$app/state', () => appState);
 // otherwise this is brittle to become stale
 const routes: [string, Component][] = [
 	['/', HomePage],
+	['/experience', ExperiencePage],
 	['/privacy', PrivacyPage]
 ];
 
