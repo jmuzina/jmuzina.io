@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Mail } from '@lucide/svelte';
-	const title = 'Julie Mužina – Making things a little better';
+	const title = 'Julie Mužina | Making things a little better';
 	const description =
 		"Julie Mužina's personal site. Trying to make sense of things, and to make them a little better.";
 </script>

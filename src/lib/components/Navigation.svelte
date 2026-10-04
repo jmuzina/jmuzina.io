@@ -26,7 +26,7 @@
 		<h1 class="text-xl">
 			<a
 				aria-current={isHome ? 'page' : undefined}
-				aria-label={isHome ? undefined : 'Julie Mužina – home'}
+				aria-label={isHome ? undefined : 'Julie Mužina | home'}
 				class="text-brand-light dark:text-primary-300 no-underline hover:underline focus-visible:underline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-sm after:absolute after:inset-0 after:content-['']"
 				href="/"
 			>

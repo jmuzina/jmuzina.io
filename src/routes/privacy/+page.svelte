@@ -1,5 +1,5 @@
 <script lang="ts">
-	const title = 'Privacy – Julie Mužina';
+	const title = 'Privacy | Julie Mužina';
 	const description = 'Privacy policy';
 </script>
 

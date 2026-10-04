@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Experience } from '$lib/components';
-	const title = 'Experience – Julie Mužina';
+	const title = 'Experience | Julie Mužina';
 	const description =
 		'Profesional & Academic history of Julie Mužina (currently a software engineer at Canonical).';
 </script>
