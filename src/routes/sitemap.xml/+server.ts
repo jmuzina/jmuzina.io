@@ -1,4 +1,4 @@
-import { buildSitemap, getPagePathnames } from '$lib/sitemap';
+import { buildSitemap, getPagePathnames } from '#lib/sitemap.ts';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
