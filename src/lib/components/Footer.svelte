@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Envelope, Github, Linkedin } from '@boxicons/svelte';
-	import { commitDate, commitSha, shortSha, githubRepoUrl } from '$lib/build-info';
+	import { commitDate, commitSha, shortSha, githubRepoUrl } from '#lib/build-info.ts';
 
 	const formattedDate = commitDate
 		? new Date(commitDate).toLocaleDateString('en-US', {

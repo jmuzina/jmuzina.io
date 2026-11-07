@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 import { defineBrowserCommand, playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
-import { defineGitInfo } from './vite.config';
+import { defineGitInfo } from './vite.config.ts';
 
 /**
  * Testing helper that lets tests change color scheme

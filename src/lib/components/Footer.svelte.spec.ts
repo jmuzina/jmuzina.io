@@ -2,7 +2,7 @@ import { page } from 'vitest/browser';
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Footer from './Footer.svelte';
-import { commitDate, commitSha, shortSha, githubRepoUrl } from '$lib/build-info';
+import { commitDate, commitSha, shortSha, githubRepoUrl } from '#lib/build-info.ts';
 
 describe('Footer.svelte', () => {
 	it('should render social navigation links', async () => {

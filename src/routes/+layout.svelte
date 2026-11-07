@@ -1,8 +1,8 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.ico';
+	import favicon from '#lib/assets/favicon.ico';
 	import '../app.css';
 	import { page } from '$app/state';
-	import { Footer, Navigation } from '$lib/components';
+	import { Footer, Navigation } from '#lib/components/index.ts';
 
 	let { children } = $props();
 

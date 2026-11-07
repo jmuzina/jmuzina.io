@@ -1,3 +1,4 @@
+import adapter from '@sveltejs/adapter-static';
 import { execSync } from 'node:child_process';
 import devtoolsJson from 'vite-plugin-devtools-json';
 import { defineConfig } from 'vitest/config';
@@ -31,5 +32,12 @@ export const defineGitInfo = {
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
 	define: defineGitInfo,
-	plugins: [tailwindcss(), sveltekit(), devtoolsJson()]
+	plugins: [
+		tailwindcss(),
+		sveltekit({
+			adapter: adapter({ precompress: true }),
+			paths: { origin: process.env.SITE_ORIGIN || 'https://jmuzina.io' }
+		}),
+		devtoolsJson()
+	]
 });
