@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from '#lib/assets/favicon.ico';
 	import '../app.css';
 	import { page } from '$app/state';
 	import { Footer, Navigation } from '#lib/components/index.ts';
@@ -16,7 +15,9 @@
 </script>
 
 <svelte:head>
-	<link href={favicon} rel="icon" />
+	<link href="/favicon.ico" rel="icon" sizes="16x16" />
+	<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+	<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 	<link href={canonicalUrl} rel="canonical" />
 	<meta content={canonicalUrl} property="og:url" />
 	<meta content={ogImageUrl} property="og:image" />

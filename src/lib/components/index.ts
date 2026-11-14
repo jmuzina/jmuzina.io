@@ -1,3 +1,4 @@
 export { default as Experience } from './Experience.svelte';
 export { default as Footer } from './Footer.svelte';
 export { default as Navigation } from './Navigation.svelte';
+export { default as JmMark } from './JmMark.svelte';

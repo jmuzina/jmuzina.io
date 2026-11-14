@@ -39,7 +39,7 @@
 			startDate: new Date('2023-11-20'),
 			endDate: new Date('2024-04-23'),
 			description:
-				'Modernized and enhanced product inventory web applications used by <a href="https://www.sherwin-williams.com/" rel="noopener noreferrer" target="_blank">Sherwin-Williams</a>\' global salesforce.'
+				'Modernized and enhanced product inventory web applications used by <a href="https://www.sherwin-williams.com/" rel="noopener" target="_blank">Sherwin-Williams</a>\' global salesforce.'
 		},
 		{
 			company: 'Comsat Architects',
@@ -50,7 +50,7 @@
 			endDate: new Date('2023-11-17'),
 			description:
 				'Developed mission planning and data visualization\n' +
-				'applications for <a href="https://nasa.gov" rel="noopener noreferrer" target="_blank">NASA</a>.'
+				'applications for <a href="https://nasa.gov" rel="noopener" target="_blank">NASA</a>.'
 		},
 		{
 			company: 'Medical Mutual',
@@ -115,9 +115,7 @@
 						<h3>
 							{job.title} at
 							{#if job.websiteUrl}
-								<a href={job.websiteUrl} target="_blank" rel="noreferrer noopener">
-									{job.company}</a
-								>
+								<a href={job.websiteUrl} target="_blank" rel="noopener"> {job.company}</a>
 							{:else}
 								{job.company}
 							{/if}
@@ -154,7 +152,7 @@
 						<h3>
 							{education.program} from
 							{#if education.websiteUrl}
-								<a href={education.websiteUrl} target="_blank" rel="noopener noreferrer"
+								<a href={education.websiteUrl} target="_blank" rel="noopener"
 									>{education.institution}</a
 								>
 							{:else}

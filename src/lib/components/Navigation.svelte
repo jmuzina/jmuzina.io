@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { Briefcase } from '@lucide/svelte';
 	import type { Component } from 'svelte';
+	import JmMark from './JmMark.svelte';
 
 	type NavItem = {
 		key: string;
@@ -19,10 +20,8 @@
 
 <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
 	<div class="relative flex items-center gap-x-3">
-		<!-- homepage already shows the portrait -->
-		{#if !isHome}
-			<img alt="" class="size-10 shrink-0 rounded-full" src="/assets/julie-100.jpeg" width="40" />
-		{/if}
+		<!-- decorative: the name link beside it carries the accessible label -->
+		<JmMark class="size-10 shrink-0" />
 		<h1 class="text-xl">
 			<a
 				aria-current={isHome ? 'page' : undefined}
