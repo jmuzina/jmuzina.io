@@ -52,17 +52,28 @@
 			</li>
 		</ul>
 
-		<div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+		<div
+			class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400"
+		>
 			<a
 				class="inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
 				href="/privacy">Privacy</a
 			>
+			<span>
+				Logo by
+				<a
+					class="text-inherit hover:text-brand-light dark:hover:text-brand-dark underline decoration-dotted underline-offset-2"
+					href="https://dianamuzina.com"
+					rel="noopener"
+					target="_blank">Diana Mužina</a
+				>
+			</span>
 		</div>
 	</div>
 
 	{#if commitDate || commitSha}
 		<div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-right">
-			<span>Last updated</span>
+			<span>Updated</span>
 			{#if formattedDate}
 				<time datetime={commitDate}>{formattedDate}</time>
 			{/if}

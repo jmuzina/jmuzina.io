@@ -20,6 +20,13 @@ describe('Footer.svelte', () => {
 		expect(privacyLink.element().getAttribute('href')).toBe('/privacy');
 	});
 
+	it('should credit the logo designer', async () => {
+		render(Footer);
+
+		const creditLink = page.getByRole('link', { name: 'Diana Mužina' });
+		expect(creditLink.element().getAttribute('href')).toBe('https://dianamuzina.com');
+	});
+
 	it('should render last updated info and commit link', async () => {
 		render(Footer);
 
