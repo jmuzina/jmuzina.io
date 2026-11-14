@@ -20,10 +20,8 @@
 	<section class="flex flex-col gap-2">
 		<h3 class="text-xl">Analytics</h3>
 		<p>
-			I use a self-hosted instance of <a
-				href="https://matomo.org"
-				rel="noopener"
-				target="_blank">Matomo</a
+			I use a self-hosted instance of <a href="https://matomo.org" rel="noopener" target="_blank"
+				>Matomo</a
 			> to understand how the site is used (which pages are read, where people come from). It is configured
 			to be as minimal as possible:
 		</p>

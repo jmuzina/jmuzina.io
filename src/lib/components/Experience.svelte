@@ -115,9 +115,7 @@
 						<h3>
 							{job.title} at
 							{#if job.websiteUrl}
-								<a href={job.websiteUrl} target="_blank" rel="noopener">
-									{job.company}</a
-								>
+								<a href={job.websiteUrl} target="_blank" rel="noopener"> {job.company}</a>
 							{:else}
 								{job.company}
 							{/if}
