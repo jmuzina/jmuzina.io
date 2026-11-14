@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { Briefcase } from '@lucide/svelte';
 	import type { Component } from 'svelte';
+	import JmMark from './JmMark.svelte';
 
 	type NavItem = {
 		key: string;
@@ -20,20 +21,7 @@
 <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
 	<div class="relative flex items-center gap-x-3">
 		<!-- decorative: the name link beside it carries the accessible label -->
-		<img
-			alt=""
-			class="size-10 shrink-0 dark:hidden"
-			height="40"
-			src="/assets/jm-mark-dark.svg"
-			width="40"
-		/>
-		<img
-			alt=""
-			class="hidden size-10 shrink-0 dark:block"
-			height="40"
-			src="/assets/jm-mark-light.svg"
-			width="40"
-		/>
+		<JmMark class="size-10 shrink-0" />
 		<h1 class="text-xl">
 			<a
 				aria-current={isHome ? 'page' : undefined}
