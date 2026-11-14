@@ -21,7 +21,7 @@
 					class="inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
 					aria-label="GitHub"
 					href="https://github.com/jmuzina"
-					rel="noreferrer noopener"
+					rel="noopener"
 					target="_blank"
 				>
 					<Github />
@@ -32,7 +32,7 @@
 					class="inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
 					aria-label="LinkedIn"
 					href="https://linkedin.com/in/jmuzina"
-					rel="noreferrer noopener"
+					rel="noopener"
 					target="_blank"
 				>
 					<Linkedin />
@@ -43,7 +43,7 @@
 					class="inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
 					aria-label="Email"
 					href="mailto:jmuzina@jmuzina.io"
-					rel="noreferrer noopener"
+					rel="noopener"
 					target="_blank"
 				>
 					<!--				envelope icon is slightly misaligned by default -->
@@ -82,7 +82,7 @@
 					aria-label="Commit {shortSha} on GitHub"
 					class="inline-flex font-mono text-inherit hover:text-brand-light dark:hover:text-brand-dark underline decoration-dotted underline-offset-2"
 					href="{githubRepoUrl}/commit/{commitSha}"
-					rel="noreferrer noopener"
+					rel="noopener"
 					target="_blank">{shortSha}</a
 				>)
 			{/if}

@@ -39,7 +39,7 @@ describe('Footer.svelte', () => {
 		}
 
 		if (commitDate) {
-			expect(page.getByText('Last updated')).toBeDefined();
+			expect(page.getByText('Updated')).toBeDefined();
 		}
 	});
 });
