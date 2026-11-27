@@ -7,8 +7,9 @@ Stack, code layout and deploys: [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Running it locally
 
-Requires Node 26, pnpm 12 and [Vale](https://docs.vale.sh/topics/installation)
-(`brew install vale`). Node and pnpm are pinned; pnpm downloads the matching Node if needed.
+Requires [Node](https://nodejs.org) 26, [pnpm](https://pnpm.io) 12 and
+[Vale](https://vale.sh). Node and pnpm are pinned; pnpm downloads the matching Node if
+needed.
 
 ```shell-session
 pnpm install
