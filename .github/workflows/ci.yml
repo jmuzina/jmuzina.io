@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # main -> prod, everything else -> dev. Baked into absolute URLs at build time (see svelte.config.js).
+  # main -> prod, everything else -> dev. Baked into absolute URLs at build time (paths.origin in vite.config.ts).
   SITE_ORIGIN: ${{ github.ref_name == 'main' && 'https://jmuzina.io' || 'https://dev.jmuzina.io' }}
 
 jobs:
@@ -53,6 +53,10 @@ jobs:
 
       - name: Check
         run: pnpm run check
+
+      # Not the vale-action: by default it only annotates added lines and never fails the build.
+      - name: Set up Vale
+        uses: ./.github/actions/setup-vale
 
       - name: Lint
         run: pnpm run lint
@@ -110,10 +114,13 @@ jobs:
             ${{ runner.os }}-playwright-
 
       - name: Install Playwright Browsers
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium firefox webkit
 
       - name: Run tests
         run: pnpm run test
+
+      - name: Run e2e tests
+        run: pnpm run test:e2e
 
   deploy:
     name: Deploy to ${{ github.ref_name == 'main' && 'prod' || 'dev' }}

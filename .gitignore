@@ -28,4 +28,6 @@ storybook-static
 .idea/
 
 # Playwright
-/test-results
+/test-results/
+/playwright-report/
+/blob-report/
