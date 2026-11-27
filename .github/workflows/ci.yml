@@ -19,6 +19,7 @@ jobs:
   build:
     outputs:
       STORE_PATH: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+      PLAYWRIGHT_VERSION: ${{ steps.playwright.outputs.VERSION }}
     strategy:
       matrix:
         node: [24, 26]
@@ -50,6 +51,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile # uses cache if cache hit.
+
+      # The visual job's image tag must match the installed Playwright.
+      - name: Get Playwright version
+        id: playwright
+        run: echo "VERSION=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Check
         run: pnpm run check
@@ -122,9 +128,40 @@ jobs:
       - name: Run e2e tests
         run: pnpm run test:e2e
 
+  visual:
+    needs: build
+    runs-on: ubuntu-24.04
+    # The same image scripts/e2e-visual.sh makes baselines in. The bare runner's fonts would
+    # never match them.
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.build.outputs.PLAYWRIGHT_VERSION }}-noble
+      options: --user 1001
+    steps:
+      - name: Download workspace artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: workspace-node-v26
+          path: .
+
+      - uses: pnpm/setup@v2
+        with:
+          runtime: node@26
+          version: 12.4.1
+          install: false
+
+      - name: Run visual tests
+        run: pnpm exec playwright test --config playwright.visual.config.ts
+
+      - name: Upload visual diff report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diff
+          path: playwright-report
+
   deploy:
     name: Deploy to ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
-    needs: [build, test]
+    needs: [build, test, visual]
     if: github.event_name == 'push'
     runs-on: ubuntu-24.04
     # main -> prod (jmuzina.io), dev -> dev (dev.jmuzina.io)

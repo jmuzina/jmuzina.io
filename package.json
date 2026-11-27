@@ -23,7 +23,9 @@
 		"test:unit:watch": "vitest --config vitest.config.server.ts",
 		"test:component": "vitest run --config vitest.config.client.ts",
 		"test:component:watch": "vitest --config vitest.config.client.ts",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"test:e2e:visual": "sh scripts/e2e-visual.sh",
+		"test:e2e:visual:update": "sh scripts/e2e-visual.sh --update-snapshots"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.14.1",

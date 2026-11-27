@@ -11,9 +11,9 @@ How the site is built, and why.
 | Styling   | [Tailwind CSS 4](https://tailwindcss.com/), [Skeleton 5](https://skeleton.dev/), Tailwind Typography |
 | Content   | [mdsvex](https://github.com/pngwn/MDsveX) with Prism highlighting                                    |
 | Icons     | [Lucide](https://lucide.dev/), [Boxicons](https://boxicons.com/)                                     |
-| Tests     | Vitest (unit and in-browser components), Playwright (end-to-end), axe-core                           |
+| Tests     | Vitest (unit and in-browser components), Playwright (end-to-end and screenshots), axe-core           |
 | Tooling   | pnpm 12, Node 26, ESLint, Prettier, markdownlint-cli2, Vale, Dependabot                              |
-| CI/CD     | GitHub Actions: check, lint, test and build, then deploy                                             |
+| CI/CD     | GitHub Actions: check, lint, build, test and screenshot diffs, then deploy                           |
 
 ## Client-side rendering is off
 
@@ -53,10 +53,17 @@ src/
     ├── markdown/          blog markdown plugins
     └── components/        Svelte components
 e2e/                       Playwright tests, uses sitemap to find routes to test automatically
+└── visual.spec.ts-snapshots/   screenshot baselines
+scripts/
+└── e2e-visual.sh          runs the visual tests in the Playwright Docker image
 ```
 
 ## Deployment
 
-GitHub Actions checks, lints, tests and builds every push. `dev` deploys to
+GitHub Actions checks, lints, builds and tests every push. A separate visual job compares
+every page in light and dark mode, on desktop Chromium and mobile WebKit, against the
+committed screenshots. It runs in the Playwright Docker image, the same one
+`pnpm test:e2e:visual` uses, because fonts and text rendering differ between machines.
+Deploys wait for both. `dev` deploys to
 [dev.jmuzina.io](https://dev.jmuzina.io) and `main` to [jmuzina.io](https://jmuzina.io).
 Both serve static files from a VPS, uploaded only when the build output changed.
