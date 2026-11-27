@@ -1,7 +1,8 @@
-Boxicons
-cookieless
 (?i)ipsum
 (?i)lorem
+Bitwarden
+Boxicons
+cookieless
 Lucide
 Matomo
 mdsvex
