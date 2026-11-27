@@ -58,3 +58,9 @@ No wiring needed:
 Run `pnpm build && pnpm preview` and read the post in light mode, dark mode and on a
 phone. Then run `pnpm test:e2e`, which finds new posts in the sitemap and checks
 accessibility and navigation.
+
+Last, with Docker running, run `pnpm test:e2e:visual:update` and commit the screenshots it
+changes in `e2e/visual.spec.ts-snapshots/` with the post. The home page and blog index list
+posts, so a new post changes their screenshots and adds its own. Editing a post changes its
+screenshot too. CI fails until the committed screenshots match. Removing or renaming a post
+leaves its old screenshots behind, and the visual tests fail until you delete them.

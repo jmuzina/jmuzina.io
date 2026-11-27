@@ -6,6 +6,8 @@ const port = 4173;
 // tests can't execute.
 export default defineConfig({
 	testDir: 'e2e',
+	// Screenshots only match inside the Playwright Docker image (see playwright.visual.config.ts).
+	testIgnore: '**/visual.spec.ts',
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,

@@ -23,7 +23,9 @@ No change may give these up.
 - **Analytics stay private.** Self-hosted, cookieless Matomo with anonymized IPs, Do Not
   Track honored, opt-out available, as stated on the
   [privacy page](src/routes/privacy/+page.svelte).
-- **Posts are Markdown only.** Publishing a post never requires a code change.
+- **Posts are Markdown only.** Publishing a post never requires a code change. It does
+  change screenshots (the post, the home page and the blog index), so commit the updated
+  visual baselines with it.
 - **One design system.** All styling comes from Tailwind and Skeleton tokens (the
   `renewed-orchid` theme).
 
@@ -37,6 +39,7 @@ pnpm lint:fix        # fix what the linters can
 pnpm fix             # lint:fix, then check + lint to report what's left
 pnpm test            # test:unit (node) + test:component (in Chromium, Firefox, WebKit)
 pnpm test:e2e        # playwright against the built site; first: pnpm exec playwright install chromium firefox webkit
+pnpm test:e2e:visual # screenshot diffs in the Playwright Docker image; :update rewrites baselines
 pnpm build           # prerender to build/; fails on broken internal links
 ```
 
