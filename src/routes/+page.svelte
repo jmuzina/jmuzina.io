@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { Mail } from '@lucide/svelte';
+	import { ArrowRight, Mail } from '@lucide/svelte';
+	import { PostList } from '#lib/components/index.ts';
+	import { getPosts } from '#lib/posts.ts';
+
+	const posts = getPosts();
+	const recentPosts = posts.slice(0, 3);
+
 	const title = 'Julie Mužina | Making things a little better';
 	const description =
 		"Julie Mužina's personal site. Trying to make sense of things, and to make them a little better.";
@@ -12,36 +18,53 @@
 	<meta content={description} property="og:description" />
 </svelte:head>
 
-<section
-	aria-labelledby="intro-heading"
-	class="my-auto flex max-w-none flex-col gap-6 sm:flex-row sm:items-center sm:gap-12"
->
-	<img
-		alt="Portrait of Julie Mužina"
-		class="size-32 shrink-0 rounded-full sm:size-48"
-		height="396"
-		src="/assets/julie.jpeg"
-		width="400"
-	/>
-	<div>
-		<h2 class="mb-4 text-4xl font-bold sm:text-5xl" id="intro-heading">Hi, I'm Julie.</h2>
-		<p class="text-xl sm:text-2xl">
-			I like making sense of things: how they work, why they are the way they are, and how they
-			could be a little better.
-		</p>
-		<p>
-			I started out modding games, found my way to building websites for the communities around
-			them, and now write software for a living. Lately I'm getting back into building things just
-			for fun, starting with this (a new personal site, from the ground-up!). It's early days, so
-			there's more to come.
-		</p>
-		<!-- Swap to "More about me" (/about) when ready -->
-		<a
-			class="mt-4 inline-flex items-center gap-2 rounded-full border border-current px-4 py-2 no-underline"
-			href="mailto:jmuzina@jmuzina.io"
-		>
-			<Mail aria-hidden="true" size={18} />
-			Say hello
-		</a>
-	</div>
-</section>
+<div class="my-auto flex flex-col gap-12">
+	<section
+		aria-labelledby="intro-heading"
+		class="flex max-w-none flex-col gap-6 sm:flex-row sm:items-center sm:gap-12"
+	>
+		<img
+			alt="Portrait of Julie Mužina"
+			class="size-32 shrink-0 rounded-full sm:size-48"
+			height="396"
+			src="/assets/julie.jpeg"
+			width="400"
+		/>
+		<div>
+			<h1 class="mb-4 text-4xl font-bold sm:text-5xl" id="intro-heading">Hi, I'm Julie.</h1>
+			<p class="text-xl sm:text-2xl">
+				I like making sense of things: how they work, why they are the way they are, and how they
+				could be a little better.
+			</p>
+			<p>
+				I started out modding games, found my way to building websites for the communities around
+				them, and now write software for a living. Lately I'm getting back into building things just
+				for fun, starting with this (a new personal site, from the ground-up!).
+			</p>
+			<!-- Swap to "More about me" (/about) when ready -->
+			<a
+				class="mt-4 inline-flex items-center gap-2 rounded-full border border-current px-4 py-2 no-underline"
+				href="mailto:jmuzina@jmuzina.io"
+			>
+				<Mail aria-hidden="true" size={18} />
+				Say hello
+			</a>
+		</div>
+	</section>
+
+	{#if recentPosts.length}
+		<!-- sm:ps-60 = the portrait (size-48) plus the gap (gap-12), so this lines up with the intro text -->
+		<section aria-labelledby="recent-heading" class="flex flex-col gap-4 sm:ps-60">
+			<h2 class="text-2xl text-primary-600 dark:text-primary-100" id="recent-heading">
+				Recent writing
+			</h2>
+			<PostList headingLevel={3} posts={recentPosts} />
+			{#if posts.length > recentPosts.length}
+				<a class="inline-flex items-center gap-1 self-start" href="/blog">
+					All posts
+					<ArrowRight aria-hidden="true" size={16} />
+				</a>
+			{/if}
+		</section>
+	{/if}
+</div>

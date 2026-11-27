@@ -1,0 +1,9 @@
+Boxicons
+cookieless
+(?i)ipsum
+(?i)lorem
+Lucide
+Matomo
+mdsvex
+prerendered
+px

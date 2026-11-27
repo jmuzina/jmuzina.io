@@ -1,0 +1,23 @@
+name: Set up Vale
+description: Install a pinned Vale release, verified against its published checksums.
+
+inputs:
+  version:
+    description: Vale release to install.
+    default: '3.29.0'
+
+runs:
+  using: composite
+  steps:
+    - name: Install Vale
+      shell: bash
+      env:
+        VALE_VERSION: ${{ inputs.version }}
+      run: |
+        cd "$RUNNER_TEMP"
+        base="https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}"
+        curl -sSfLO "$base/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
+        curl -sSfLO "$base/vale_${VALE_VERSION}_checksums.txt"
+        grep "Linux_64-bit.tar.gz" "vale_${VALE_VERSION}_checksums.txt" | sha256sum --check -
+        tar -xzf "vale_${VALE_VERSION}_Linux_64-bit.tar.gz" vale
+        echo "$RUNNER_TEMP" >> "$GITHUB_PATH"

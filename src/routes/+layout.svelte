@@ -1,13 +1,19 @@
 <script lang="ts">
 	import '../app.css';
 	import { page } from '$app/state';
-	import { Footer, Navigation } from '#lib/components/index.ts';
+	import { Breadcrumbs, Footer, Navigation } from '#lib/components/index.ts';
+	import { FEED_PATH, FEED_TITLE } from '#lib/feed.ts';
+	import { markdownPath } from '#lib/page-markdown.ts';
+	import { getPosts } from '#lib/posts.ts';
+	import { getSocialImage } from '#lib/seo.ts';
 
 	let { children } = $props();
 
-	// page.url.origin is kit.prerender.origin at build time (see svelte.config.js)
+	// page.url.origin is paths.origin at build time (see vite.config.ts)
 	const canonicalUrl = $derived(new URL(page.url.pathname, page.url.origin).href);
-	const ogImageUrl = $derived(new URL('/assets/julie.jpeg', page.url.origin).href);
+	// Here, not in the post layout: a page can't override a tag its layout already rendered.
+	const post = $derived(getPosts().find(({ path }) => path === page.url.pathname));
+	const image = $derived(getSocialImage(post));
 
 	const matomoEnabled = $derived(
 		page.url.origin === 'https://jmuzina.io' || page.url.origin === 'https://dev.jmuzina.io'
@@ -19,8 +25,20 @@
 	<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
 	<link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 	<link href={canonicalUrl} rel="canonical" />
+	<link href={FEED_PATH} rel="alternate" title={FEED_TITLE} type="application/atom+xml" />
+	<link href={markdownPath(page.url.pathname)} rel="alternate" type="text/markdown" />
 	<meta content={canonicalUrl} property="og:url" />
-	<meta content={ogImageUrl} property="og:image" />
+	<meta content={post ? 'article' : 'website'} property="og:type" />
+	<meta content={new URL(image.src, page.url.origin).href} property="og:image" />
+	<meta content={image.alt} property="og:image:alt" />
+	{#if image.type}
+		<meta content={image.type} property="og:image:type" />
+	{/if}
+	{#if image.width && image.height}
+		<meta content={String(image.width)} property="og:image:width" />
+		<meta content={String(image.height)} property="og:image:height" />
+	{/if}
+	<meta content={image.large ? 'summary_large_image' : 'summary'} name="twitter:card" />
 	{#if matomoEnabled}
 		<script>
 			var _paq = (window._paq = window._paq || []);
@@ -69,6 +87,7 @@
 		tabindex="-1"
 	>
 		<div class="container mx-auto flex grow flex-col">
+			<Breadcrumbs />
 			{@render children()}
 		</div>
 	</main>

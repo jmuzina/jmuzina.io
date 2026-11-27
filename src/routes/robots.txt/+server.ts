@@ -2,7 +2,7 @@ import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
-// url.origin is kit.prerender.origin at build time (see svelte.config.js)
+// url.origin is paths.origin at build time (see vite.config.ts)
 export const GET: RequestHandler = ({ url }) =>
 	new Response(
 		`# allow crawling everything by default

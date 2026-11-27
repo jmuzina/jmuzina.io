@@ -26,3 +26,8 @@ vite.config.ts.timestamp-*
 storybook-static
 
 .idea/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/

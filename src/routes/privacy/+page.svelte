@@ -11,18 +11,14 @@
 </svelte:head>
 
 <article class="flex flex-col gap-4 max-w-prose">
-	<a
-		class="text-sm text-gray-500 dark:text-gray-300 hover:underline self-start px-1.5 -ms-1.5"
-		href="/">← Back to home</a
-	>
-	<h2 class="text-2xl text-primary-600 dark:text-primary-100">Privacy</h2>
+	<h1 class="text-2xl text-primary-600 dark:text-primary-100">Privacy</h1>
 
 	<section class="flex flex-col gap-2">
-		<h3 class="text-xl">Analytics</h3>
+		<h2 class="text-xl">Analytics</h2>
 		<p>
-			I use a self-hosted instance of <a href="https://matomo.org" rel="noopener" target="_blank"
-				>Matomo</a
-			> to understand how the site is used (which pages are read, where people come from). It is configured
+			I use a self-hosted instance of <a href="https://matomo.org" rel="noopener" target="_blank">
+				Matomo
+			</a> to understand how the site is used (which pages are read, where people come from). It is configured
 			to be as minimal as possible:
 		</p>
 		<ul class="list-disc ps-6">
@@ -48,7 +44,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2">
-		<h3 class="text-xl">Server logs</h3>
+		<h2 class="text-xl">Server logs</h2>
 		<p>
 			The server hosting this site keeps short-lived access logs (IP address, requested URL, time,
 			browser) to keep the site secure and working. These logs are deleted automatically after 14
@@ -57,7 +53,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2">
-		<h3 class="text-xl">Retention</h3>
+		<h2 class="text-xl">Retention</h2>
 		<p>
 			Raw analytics data is deleted automatically after 6 months. Only aggregated, anonymous reports
 			(e.g. "N visits to this page in March") are kept beyond that.
@@ -65,7 +61,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2">
-		<h3 class="text-xl">Where data is stored</h3>
+		<h2 class="text-xl">Where data is stored</h2>
 		<p>
 			The site and the analytics service run on a server provided by OVHcloud, located in Virginia,
 			USA.
@@ -73,7 +69,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2">
-		<h3 class="text-xl">Your rights</h3>
+		<h2 class="text-xl">Your rights</h2>
 		<p>
 			Depending on where you live, you may have the right to access, correct, or delete data about
 			you, to restrict or object to its processing, and to lodge a complaint with your local data
@@ -83,7 +79,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2">
-		<h3 class="text-xl">Who is responsible</h3>
+		<h2 class="text-xl">Who is responsible</h2>
 		<p>
 			This site is run by Julie Mužina. For any privacy questions or requests, email
 			<a href="mailto:jmuzina@jmuzina.io">jmuzina@jmuzina.io</a>.
@@ -91,7 +87,7 @@
 	</section>
 
 	<section class="flex flex-col gap-2" id="opt-out">
-		<h3 class="text-xl">Opt out</h3>
+		<h2 class="text-xl">Opt out</h2>
 		<div class="flex flex-col gap-2" hidden id="opt-out-controls">
 			<label class="flex items-center gap-2">
 				<input id="opt-out-checkbox" type="checkbox" />

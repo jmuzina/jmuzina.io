@@ -1,0 +1,7 @@
+@import './app.css';
+
+/* People read the XHTML <body> in the feed (see src/lib/feed.ts); the Atom elements around it are
+   for feed readers. */
+feed > :not(body) {
+	display: none;
+}
