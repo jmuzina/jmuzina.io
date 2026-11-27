@@ -1,10 +1,10 @@
 import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineGitInfo } from './vite.config.ts';
+import { defineGitInfo, svelteOptions } from './vite.config.ts';
 
 export default defineConfig({
 	define: defineGitInfo,
-	plugins: [sveltekit()],
+	plugins: [sveltekit(svelteOptions)],
 	test: {
 		name: 'server',
 		environment: 'node',

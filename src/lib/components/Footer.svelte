@@ -67,16 +67,20 @@
 		>
 			<a
 				class="max-sm:hidden inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
-				href="/privacy">Privacy</a
+				href="/privacy"
 			>
+				Privacy
+			</a>
 			<span>
 				Logo by
 				<a
 					class="text-inherit hover:text-brand-light dark:hover:text-brand-dark underline decoration-dotted underline-offset-2"
 					href="https://dianamuzina.com"
 					rel="noopener"
-					target="_blank">Diana<span class="max-sm:sr-only">&nbsp;Mužina</span></a
+					target="_blank"
 				>
+					Diana<span class="max-sm:sr-only">&nbsp;Mužina</span>
+				</a>
 			</span>
 		</div>
 	</div>
@@ -115,8 +119,10 @@
 					class="inline-flex font-mono text-inherit hover:text-brand-light dark:hover:text-brand-dark underline decoration-dotted underline-offset-2"
 					href="{githubRepoUrl}/commit/{commitSha}"
 					rel="noopener"
-					target="_blank">{shortSha}</a
-				>)
+					target="_blank"
+				>
+					{shortSha}
+				</a>)
 			{/if}
 		</div>
 	{/if}

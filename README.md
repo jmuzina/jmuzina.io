@@ -1,45 +1,32 @@
-# Julie Mužina's Website
+# jmuzina.io
 
-This is my personal website.
+Source for [jmuzina.io](https://jmuzina.io), my personal site. It replaces my
+[old Angular portfolio](https://github.com/jmuzina/portfolio).
 
-This is a work in progress.
-The old site was built with Angular a long time ago.
-Its source can be found [here](https://github.com/jmuzina/portfolio).
+Stack, code layout and deploys: [ARCHITECTURE.md](ARCHITECTURE.md).
 
-After ~5 years I decided I wanted to rewrite it with the benefit
-of many more years of experience. It also serves as a nice test of my Svelte knowledge.
+## Running it locally
 
-I already think this _looks_ a lot better than the old site, so I'm deploying it as my de-facto website.
-
-Here's an inexhaustive list of other things I have a mind to add:
-
-- Blog
-- PDF version of resume
-
-## Running the project
-
-This is pretty dead simple.
-After the repo is cloned, install the deps:
+Requires Node 26, pnpm 12 and [Vale](https://docs.vale.sh/topics/installation)
+(`brew install vale`). Node and pnpm are pinned; pnpm downloads the matching Node if needed.
 
 ```shell-session
 pnpm install
-```
-
-Then run the app locally:
-
-```shell-session
 pnpm dev
 ```
 
-Before you commit, run linting & formatting checks to appease the CI (and avoid burning more resources in the cloud).
+| Task                         | Command                                                                              |
+| ---------------------------- | ------------------------------------------------------------------------------------ |
+| Dev server                   | `pnpm dev`                                                                           |
+| Production build and preview | `pnpm build && pnpm preview`                                                         |
+| Type-check                   | `pnpm check`                                                                         |
+| Lint (code, Markdown, prose) | `pnpm lint`                                                                          |
+| Fix everything fixable       | `pnpm fix` (then reports what's left: type errors, prose)                            |
+| Unit and component tests     | `pnpm test` (or `pnpm test:unit`, `pnpm test:component`; `:watch` for either)        |
+| End-to-end tests             | `pnpm test:e2e` (first time: `pnpm exec playwright install chromium firefox webkit`) |
 
-```shell-session
-pnpm fix:all
-```
+## Credits and license
 
-## Tech
+Logo by [Diana Mužina](https://dianamuzina.com).
 
-- [Svelte 5](https://svelte.dev/)
-- [Skeleton UI](https://skeleton.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [BoxIcons](https://boxicons.com/)
+Code is licensed under [AGPL-3.0](LICENSE).

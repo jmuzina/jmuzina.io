@@ -1,9 +1,12 @@
 import adapter from '@sveltejs/adapter-static';
 import { execSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import devtoolsJson from 'vite-plugin-devtools-json';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
+import { mdsvex } from 'mdsvex';
+import { headingAnchors } from './src/lib/markdown/heading-anchors.ts';
 
 function getGitCommitSha(): string {
 	if (process.env.PUBLIC_GIT_SHA) return process.env.PUBLIC_GIT_SHA;
@@ -29,12 +32,28 @@ export const defineGitInfo = {
 	__COMMIT_DATE__: JSON.stringify(getGitCommitDate())
 };
 
-// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
+const fromRoot = (path: string) => fileURLToPath(new URL(path, import.meta.url));
+
+// Shared with the vitest configs, which otherwise can't import .md files.
+// mdsvex resolves `layout` paths relative to each Markdown file, so they must be absolute. A named
+// layout applies to every file under a folder of that name: `blog` covers all posts.
+export const svelteOptions = {
+	extensions: ['.svelte', '.md'],
+	preprocess: [
+		mdsvex({
+			extensions: ['.md'],
+			layout: { blog: fromRoot('./src/lib/components/BlogPost.svelte') },
+			rehypePlugins: [headingAnchors]
+		})
+	]
+};
+
 export default defineConfig({
 	define: defineGitInfo,
 	plugins: [
 		tailwindcss(),
 		sveltekit({
+			...svelteOptions,
 			adapter: adapter({ precompress: true }),
 			paths: { origin: process.env.SITE_ORIGIN || 'https://jmuzina.io' }
 		}),

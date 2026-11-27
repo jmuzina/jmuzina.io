@@ -1,0 +1,47 @@
+/*
+ * A stylesheet rather than classes because Prism generates this markup at build time.
+ * Every color must keep 4.5:1 contrast on the block background in both schemes; the
+ * Playwright axe suite fails if a change breaks that.
+ */
+
+pre[class*='language-'] {
+	@apply rounded-container corner-shape-container border border-surface-200-800 bg-surface-100-900 text-surface-950-50;
+	/* a sideways-scrolling block would have to be keyboard-focusable (WCAG 2.1.1) */
+	@apply whitespace-pre-wrap wrap-anywhere;
+}
+
+.token:is(.comment, .prolog, .doctype, .cdata) {
+	@apply text-surface-700-300 italic;
+}
+
+.token:is(.punctuation, .operator) {
+	@apply text-surface-800-200;
+}
+
+.token:is(.keyword, .atrule, .important, .selector) {
+	@apply text-brand-light dark:text-brand-dark;
+}
+
+.token:is(.function, .class-name) {
+	@apply text-primary-800-200;
+}
+
+.token:is(.string, .char, .attr-value, .regex, .template-string, .inserted) {
+	@apply text-success-900-100;
+}
+
+.token:is(.number, .boolean, .constant, .symbol) {
+	@apply text-tertiary-900-100;
+}
+
+.token:is(.tag, .attr-name, .builtin, .property, .variable, .deleted) {
+	@apply text-error-900-100;
+}
+
+.token:is(.entity, .url) {
+	@apply text-surface-900-100;
+}
+
+.token:is(.important, .bold) {
+	@apply font-bold;
+}

@@ -152,9 +152,9 @@
 						<h3>
 							{education.program} from
 							{#if education.websiteUrl}
-								<a href={education.websiteUrl} target="_blank" rel="noopener"
-									>{education.institution}</a
-								>
+								<a href={education.websiteUrl} target="_blank" rel="noopener">
+									{education.institution}
+								</a>
 							{:else}
 								{education.institution}
 							{/if}

@@ -6,22 +6,33 @@ import { createRawSnippet, flushSync, mount, unmount, type Component } from 'sve
 import { commands } from 'vitest/browser';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
+import { routeFileToPathname } from '#lib/sitemap.ts';
 import appHtml from '../app.html?raw';
 import Layout from './+layout.svelte';
 import HomePage from './+page.svelte';
+import BlogPage from './blog/+page.svelte';
 import ExperiencePage from './experience/+page.svelte';
 import PrivacyPage from './privacy/+page.svelte';
 
 const appState = vi.hoisted(() => ({ page: { url: new URL('http://localhost/') } }));
 vi.mock('$app/state', () => appState);
 
-// TODO consider defining these centrally somewhere and reading from the same palce
-// otherwise this is brittle to become stale
+// By hand, to pair each path with its component; the test below fails when a page is missing.
+// Posts are Markdown pages, covered by e2e/a11y.spec.ts.
 const routes: [string, Component][] = [
 	['/', HomePage],
 	['/experience', ExperiencePage],
+	['/blog', BlogPage],
 	['/privacy', PrivacyPage]
 ];
+
+it('covers every Svelte page', () => {
+	const pages = Object.keys(import.meta.glob('/src/routes/**/+page.svelte'))
+		.map(routeFileToPathname)
+		.filter((pathname) => pathname !== null)
+		.sort();
+	expect(routes.map(([path]) => path).sort()).toEqual(pages);
+});
 
 const formatViolations = (violations: axe.Result[]) =>
 	violations
@@ -43,7 +54,7 @@ beforeAll(() => {
 afterEach(() => commands.emulateColorScheme('light'));
 
 describe.each(['light', 'dark'] as const)('a11y (%s)', (colorScheme) => {
-	it.each(routes)('%s has no WCAG 2.2 AA violations', async (path, PageComponent) => {
+	it.each(routes)('%s has no axe violations', async (path, PageComponent) => {
 		appState.page.url = new URL(path, 'http://localhost');
 		await commands.emulateColorScheme(colorScheme);
 
@@ -57,10 +68,13 @@ describe.each(['light', 'dark'] as const)('a11y (%s)', (colorScheme) => {
 		render(Layout, { children });
 		flushSync();
 		// page title.
-		expect(document.querySelector('main h2')).not.toBeNull();
+		expect(document.querySelectorAll('main h1')).toHaveLength(1);
 
 		const { violations, incomplete } = await axe.run(document, {
-			runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] }
+			runOnly: {
+				type: 'tag',
+				values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice']
+			}
 		});
 
 		// axe reports rules that crash (e.g. on a color it can't parse) as "incomplete"

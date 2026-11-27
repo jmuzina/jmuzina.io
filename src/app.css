@@ -1,8 +1,17 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton-svelte';
 @import 'renewed-orchid.css';
+@import './prism.css';
+
+/* `.js` is set by an inline script in app.html */
+@custom-variant js (&:where(.js *));
+
+/* Gate sticky UI with `tall:`: on short viewports (e.g. 400% zoom) a sticky bar eats the screen
+   (WCAG 1.4.10). */
+@custom-variant tall (@media (min-height: 32rem));
 
 @layer base {
 	html {
@@ -13,10 +22,11 @@
 
 	a {
 		@apply hover:underline;
-		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border not-focus-visible:outline-hidden outline-solid outline-primary-700 outline-1 outline-offset-1 rounded-md;
+		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border not-focus-visible:outline-hidden outline-solid outline-primary-700-300 outline-1 outline-offset-1 rounded-md;
 	}
 
-	/* exempt nav links from visited/hover colors (its distracting and i feel visited colors are only really necessary for links in non-navigational copy) */
+	/* exempt header and nav links from visited/hover colors (its distracting and i feel visited colors are only really necessary for links in non-navigational copy) */
+	header a,
 	nav a {
 		@apply visited:text-brand-light dark:visited:text-brand-dark hover:text-secondary-900 dark:hover:text-secondary-100;
 	}

@@ -1,28 +1,29 @@
 /**
- * Converts a route file path (e.g. `/src/routes/(group)/privacy/+page.svelte`) to its URL pathname.
+ * Converts a route file path (e.g. `/src/routes/(group)/privacy/+page.svelte` or
+ * `/src/routes/blog/my-post/+page.md`) to its URL pathname.
  * Returns null for dynamic routes, which can't be listed without knowing their params.
  */
 export function routeFileToPathname(file: string): string | null {
 	const segments = file
 		.replace(/^\/?src\/routes/, '')
 		.split('/')
-		.slice(0, -1) // drop the +page.svelte filename
+		.slice(0, -1) // drop the +page.svelte / +page.md filename
 		.filter((segment) => segment && !/^\(.+\)$/.test(segment)); // drop route groups
 
 	if (segments.some((segment) => segment.includes('['))) return null;
 	return '/' + segments.join('/');
 }
 
-/** Pathnames of every static page route in the app, sorted. */
+/** Pathnames of every static page route in the app (Svelte and Markdown pages), sorted. */
 export function getPagePathnames(): string[] {
-	const files = Object.keys(import.meta.glob('/src/routes/**/+page.svelte'));
+	const files = Object.keys(import.meta.glob('/src/routes/**/+page.{svelte,md}'));
 	return files
 		.map(routeFileToPathname)
 		.filter((pathname): pathname is string => pathname !== null)
 		.sort();
 }
 
-const escapeXml = (value: string) =>
+export const escapeXml = (value: string) =>
 	value
 		.replace(/&/g, '&amp;')
 		.replace(/</g, '&lt;')
@@ -30,11 +31,19 @@ const escapeXml = (value: string) =>
 		.replace(/"/g, '&quot;')
 		.replace(/'/g, '&apos;');
 
-export function buildSitemap(origin: string, pathnames: string[]): string {
+export function buildSitemap(
+	origin: string,
+	pathnames: string[],
+	lastModified: Record<string, string> = {}
+): string {
 	const urls = pathnames
-		.map(
-			(pathname) => `\t<url>\n\t\t<loc>${escapeXml(new URL(pathname, origin).href)}</loc>\n\t</url>`
-		)
+		.map((pathname) => {
+			const loc = `\t\t<loc>${escapeXml(new URL(pathname, origin).href)}</loc>\n`;
+			const lastmod = lastModified[pathname]
+				? `\t\t<lastmod>${escapeXml(lastModified[pathname])}</lastmod>\n`
+				: '';
+			return `\t<url>\n${loc}${lastmod}\t</url>`;
+		})
 		.join('\n');
 
 	return `<?xml version="1.0" encoding="UTF-8"?>

@@ -6,19 +6,51 @@
 
 		<meta content="width=device-width, initial-scale=1" name="viewport" />
 		<meta content="Julie Mužina" name="author" />
-		<meta content="website" property="og:type" />
 		<meta content="Julie Mužina" property="og:site_name" />
 		<meta content="en_US" property="og:locale" />
-		<meta content="image/jpeg" property="og:image:type" />
-		<meta content="400" property="og:image:width" />
-		<meta content="396" property="og:image:height" />
-		<meta content="Portrait of Julie Mužina" property="og:image:alt" />
-		<meta content="summary" name="twitter:card" />
+
+		<!-- No title element: browsers use the first one, so a default here overrides every page's. -->
+
+		<!-- Before first paint, so JS-only UI (the collapsed mobile nav) never flashes open. -->
+		<script>
+			document.documentElement.classList.add('js');
+		</script>
 
 		%sveltekit.head%
 	</head>
 
 	<body>
 		<div style="display: contents">%sveltekit.body%</div>
+
+		<!-- Chrome and Firefox restore the previous scroll position instead of jumping to the
+		     #fragment when a section link is reopened in the same tab (reload, Enter in the
+		     address bar), so the shared link would land wherever the reader last was. -->
+		<script>
+			(function () {
+				var id = location.hash.slice(1);
+				// a mistyped or cut-off link (#100%, #caf%C3) throws, and would stop the page's scripts
+				try {
+					id = decodeURIComponent(id);
+				} catch (e) {}
+				var target = id && document.getElementById(id);
+				if (!target) return;
+				// Back or Forward should return to where the reader was, not to the section.
+				var navigation = performance.getEntriesByType('navigation')[0];
+				if (navigation && navigation.type === 'back_forward') return;
+				history.scrollRestoration = 'manual';
+				target.scrollIntoView();
+				// again once late layout settles, unless the reader has already scrolled away
+				var y = scrollY;
+				addEventListener('load', function () {
+					if (Math.abs(scrollY - y) < 2) target.scrollIntoView();
+				});
+				// The mode is saved with the history entry and honored on Back, so leaving it 'manual'
+				// would lose the reader's place. Not sooner: on reload, Chrome and Safari restore the old
+				// position as late as after load.
+				addEventListener('pagehide', function () {
+					history.scrollRestoration = 'auto';
+				});
+			})();
+		</script>
 	</body>
 </html>

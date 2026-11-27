@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 import { defineBrowserCommand, playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
-import { defineGitInfo } from './vite.config.ts';
+import { defineGitInfo, svelteOptions } from './vite.config.ts';
 
 /**
  * Testing helper that lets tests change color scheme
@@ -16,7 +16,7 @@ const emulateColorScheme = defineBrowserCommand<['light' | 'dark']>(
 
 export default defineConfig({
 	define: defineGitInfo,
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [tailwindcss(), sveltekit(svelteOptions)],
 	test: {
 		name: 'client',
 		browser: {
@@ -24,10 +24,9 @@ export default defineConfig({
 			provider: playwright(),
 			commands: { emulateColorScheme },
 			instances: [
-				{
-					browser: 'chromium',
-					headless: true
-				}
+				{ browser: 'chromium', headless: true },
+				{ browser: 'firefox', headless: true },
+				{ browser: 'webkit', headless: true }
 			]
 		},
 		include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
