@@ -21,18 +21,4 @@ docker run --rm --ipc=host --platform linux/amd64 \
 	-v "$PWD/test-results":/out/test-results \
 	-v jmuzina-io-pnpm:/root/.local/share/pnpm \
 	"mcr.microsoft.com/playwright:v$version-noble" \
-	sh -c '
-		set -e
-		cd / && npm install --global --silent "pnpm@$0"
-		mkdir /work && cd /work
-		tar -C /host -c --exclude=./.git --exclude=./node_modules --exclude=./build \
-			--exclude=./.svelte-kit --exclude=./test-results --exclude=./playwright-report . | tar -x
-		pnpm install --frozen-lockfile
-		status=0
-		pnpm exec playwright test --config playwright.visual.config.ts "$@" || status=$?
-		cp -R e2e/visual.spec.ts-snapshots/. /out/snapshots/
-		rm -rf /out/report/* && cp -R playwright-report/. /out/report/
-		rm -rf /out/test-results/* && cp -R test-results/. /out/test-results/
-		chown -R "$HOST_UID:$HOST_GID" /out/test-results
-		exit $status
-	' "$pnpm_version" "$@"
+	sh /host/scripts/e2e-visual-container.sh "$pnpm_version" "$@"

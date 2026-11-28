@@ -1,4 +1,6 @@
+import { currentJob, educations } from './experience';
 import type { Post } from './posts';
+import { GITHUB_URL, LINKEDIN_URL } from './profiles';
 
 export const AUTHOR = 'Julie Mužina';
 
@@ -40,6 +42,30 @@ export function blogPostingJsonLd(post: Post, origin: string): string {
 		url,
 		mainEntityOfPage: url
 	};
+	return jsonLdScript(data);
+}
+
+export function personJsonLd(origin: string): string {
+	return jsonLdScript({
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: AUTHOR,
+		url: new URL('/', origin).href,
+		image: new URL(DEFAULT_IMAGE.src, origin).href,
+		jobTitle: currentJob.title,
+		worksFor: { '@type': 'Organization', name: currentJob.company, url: currentJob.websiteUrl },
+		alumniOf: educations
+			.filter((education) => education.endDate)
+			.map((education) => ({
+				'@type': 'CollegeOrUniversity',
+				name: education.institution,
+				url: education.websiteUrl
+			})),
+		sameAs: [GITHUB_URL, LINKEDIN_URL]
+	});
+}
+
+function jsonLdScript(data: object): string {
 	// a "</script>" in any value would otherwise end the block early
 	const json = JSON.stringify(data).replace(/</g, '\\u003c');
 	return `<script type="application/ld+json">${json}</script>`;

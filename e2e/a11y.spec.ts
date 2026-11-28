@@ -2,7 +2,15 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { findStateContrastFailures } from './contrast';
-import { AXE_TAGS, getPagePaths, openNavIfCollapsed, tabKey } from './helpers';
+import {
+	AXE_TAGS,
+	expectSiteFocusRing,
+	getPagePaths,
+	getSiteFocusRing,
+	openNavIfCollapsed,
+	tabKey,
+	type FocusRing
+} from './helpers';
 
 const format = (violations: Awaited<ReturnType<AxeBuilder['analyze']>>['violations']) =>
 	violations.map(
@@ -89,7 +97,18 @@ for (const colorScheme of ['light', 'dark'] as const) {
 	});
 }
 
-test('Tab reaches everything on every page and always shows where focus is', async ({
+// Rings that deliberately differ from the site ring, and how. They stay solid and in its color.
+const RING_EXCEPTIONS: { selector: string; ring: Partial<FocusRing> }[] = [
+	// its own border sits just inside the ring, so the ring is set further out to stay distinct
+	{ selector: 'a[href="#main-content"]', ring: { width: '2px', offset: '2px' } },
+	// the same ring as the skip link, which opens over it
+	{ selector: 'header a[href="/"]', ring: { width: '2px', offset: '2px' } },
+	// fills the sticky contents bar top to bottom: an outside ring would cover the bar's borders
+	// and be cut off at the top of the screen
+	{ selector: '.toc-mobile summary', ring: { offset: '-2px' } }
+];
+
+test('Tab reaches everything on every page and shows the site focus ring on each', async ({
 	page,
 	request,
 	browserName
@@ -97,6 +116,7 @@ test('Tab reaches everything on every page and always shows where focus is', asy
 	for (const path of await getPagePaths(request)) {
 		await test.step(path, async () => {
 			await page.goto(path);
+			const siteRing = await getSiteFocusRing(page);
 			const expected = await page.evaluate(() =>
 				[
 					...document.querySelectorAll(
@@ -114,34 +134,44 @@ test('Tab reaches everything on every page and always shows where focus is', asy
 			let leftPage = false;
 			for (let presses = 0; presses <= expected.length + 20; presses++) {
 				await page.keyboard.press(tabKey(browserName));
-				const focus = await page.evaluate(async () => {
-					const el = document.activeElement;
-					// back at the start: past the last stop, or wrapped round to the first
-					if (!el || el === document.body || el.hasAttribute('data-tabbed')) return null;
-					el.setAttribute('data-tabbed', '');
-					const cs = getComputedStyle(el);
-					const transparent = /rgba\(0, 0, 0, 0\)|transparent|\/ 0\)$/.test(cs.outlineColor);
-					const outline = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0;
-					const inView = () => {
-						const r = el.getBoundingClientRect();
-						return r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < innerHeight;
-					};
-					// WebKit scrolls a focused text field into view after the focus event, not with it
-					const deadline = performance.now() + 500;
-					while (!inView() && performance.now() < deadline) {
-						await new Promise(requestAnimationFrame);
-					}
-					return {
-						name: el.outerHTML.slice(0, 80),
-						indicator: (outline && !transparent) || cs.boxShadow !== 'none',
-						inView: inView()
-					};
-				});
+				const focus = await page.evaluate(
+					async ({ siteRing, exceptions }) => {
+						const el = document.activeElement;
+						// back at the start: past the last stop, or wrapped round to the first
+						if (!el || el === document.body || el.hasAttribute('data-tabbed')) return null;
+						el.setAttribute('data-tabbed', '');
+						const cs = getComputedStyle(el);
+						const exception = exceptions.find(({ selector }) => el.matches(selector));
+						const want = { style: 'solid', ...siteRing, ...exception?.ring };
+						const got = {
+							style: cs.outlineStyle,
+							width: cs.outlineWidth,
+							offset: cs.outlineOffset,
+							color: cs.outlineColor
+						};
+						const ring = (Object.keys(want) as (keyof typeof want)[])
+							.filter((key) => got[key] !== want[key])
+							.map((key) => `${key} ${got[key]}, not ${want[key]}`);
+						const inView = () => {
+							const r = el.getBoundingClientRect();
+							return r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < innerHeight;
+						};
+						// WebKit scrolls a focused text field into view after the focus event, not with it
+						const deadline = performance.now() + 500;
+						while (!inView() && performance.now() < deadline) {
+							await new Promise(requestAnimationFrame);
+						}
+						return { name: el.outerHTML.slice(0, 80), ring, inView: inView() };
+					},
+					{ siteRing, exceptions: RING_EXCEPTIONS }
+				);
 				if (!focus) {
 					leftPage = true;
 					break;
 				}
-				if (!focus.indicator) problems.push(`no focus indicator: ${focus.name}`);
+				if (focus.ring.length) {
+					problems.push(`not the site focus ring (${focus.ring.join('; ')}): ${focus.name}`);
+				}
 				if (!focus.inView) problems.push(`focused but not on screen: ${focus.name}`);
 			}
 			if (!leftPage) problems.push('Tab never got back to the start: focus is trapped');
@@ -152,6 +182,31 @@ test('Tab reaches everything on every page and always shows where focus is', asy
 			);
 			for (const name of missed) problems.push(`never reached by Tab: ${name}`);
 			expect.soft(problems, path).toEqual([]);
+		});
+	}
+});
+
+test('a keyboard-focused link shows the site focus ring, not the browser one', async ({
+	page,
+	browserName
+}) => {
+	await page.goto('/privacy');
+	await openNavIfCollapsed(page);
+	const ring = await getSiteFocusRing(page);
+
+	const links = [
+		page.getByRole('navigation', { name: 'Main' }).getByRole('link').first(),
+		page.locator('main a[href="https://matomo.org"]'),
+		page.locator('main a[href^="mailto:"]')
+	];
+	for (const link of links) {
+		await test.step((await link.textContent())!.trim(), async () => {
+			const isFocused = () => link.evaluate((el) => el === document.activeElement);
+			for (let presses = 0; presses < 50 && !(await isFocused()); presses++) {
+				await page.keyboard.press(tabKey(browserName));
+			}
+			await expect(link).toBeFocused();
+			await expectSiteFocusRing(link, ring);
 		});
 	}
 });

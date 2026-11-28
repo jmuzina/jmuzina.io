@@ -27,6 +27,13 @@ storybook-static
 
 .idea/
 
+# Claude Code's local state, and worktrees that are full copies of the repo. Prettier, ESLint,
+# markdownlint and Tailwind read this file, so it keeps them out too. Shared settings and skills
+# in .claude/ stay committable.
+/.claude/settings.local.json
+/.claude/worktrees/
+/.claude/.cc-writes/
+
 # Playwright
 /test-results/
 /playwright-report/

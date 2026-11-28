@@ -7,9 +7,9 @@ Stack, code layout and deploys: [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Running it locally
 
-Requires [Node](https://nodejs.org) 26, [pnpm](https://pnpm.io) 12 and
-[Vale](https://vale.sh). Node and pnpm are pinned; pnpm downloads the matching Node if
-needed.
+Requires [Node](https://nodejs.org) 26, [pnpm](https://pnpm.io) 12,
+[Vale](https://vale.sh) and [ShellCheck](https://www.shellcheck.net). Node and pnpm are
+pinned; pnpm downloads the matching Node if needed.
 
 ```shell-session
 pnpm install

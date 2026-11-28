@@ -1,4 +1,4 @@
-import type { APIRequestContext, Page } from '@playwright/test';
+import { expect, type APIRequestContext, type Locator, type Page } from '@playwright/test';
 
 // best-practice carries the structural rules (heading-order, region, landmark-*), which have no
 // WCAG tag. Keep in sync with the vitest axe suites (src/routes/a11y.svelte.spec.ts,
@@ -30,3 +30,27 @@ export async function getPostPath(request: APIRequestContext): Promise<string | 
 
 /** Safari only Tabs to links with "Press Tab to highlight each item" on; users press Option+Tab. */
 export const tabKey = (browserName: string) => (browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+
+export type FocusRing = { width: string; offset: string; color: string };
+
+// The `focus-ring` utility's ring in the page's color scheme, read from a probe. Its outline-style
+// is inline because an outline that isn't drawn may report a 0 width.
+export async function getSiteFocusRing(page: Page): Promise<FocusRing> {
+	return page.evaluate(() => {
+		const probe = document.createElement('span');
+		probe.className = 'focus-ring';
+		probe.style.outlineStyle = 'solid';
+		document.body.append(probe);
+		const cs = getComputedStyle(probe);
+		const ring = { width: cs.outlineWidth, offset: cs.outlineOffset, color: cs.outlineColor };
+		probe.remove();
+		return ring;
+	});
+}
+
+export async function expectSiteFocusRing(locator: Locator, ring: FocusRing) {
+	await expect(locator).toHaveCSS('outline-style', 'solid');
+	await expect(locator).toHaveCSS('outline-width', ring.width);
+	await expect(locator).toHaveCSS('outline-offset', ring.offset);
+	await expect(locator).toHaveCSS('outline-color', ring.color);
+}

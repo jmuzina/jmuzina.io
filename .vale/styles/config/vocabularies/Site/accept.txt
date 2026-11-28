@@ -1,9 +1,17 @@
+Architecting
 Boxicons
+Brooksource
 cookieless
 (?i)ipsum
+Laude
 (?i)lorem
 Lucide
+Magna
 Matomo
 mdsvex
+(?i)preflight
+OVHcloud
 prerendered
 px
+Reworld
+unsandboxed

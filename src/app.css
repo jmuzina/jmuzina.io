@@ -30,6 +30,15 @@
 	--tw-ring-color: var(--color-surface-600-400);
 }
 
+/* The site ring for anything keyboard-focused. In `base`, preflight's `:-moz-focusring
+   { outline: auto }` beats a less specific selector, so Firefox drew its own ring on links. Here
+   it always wins, and utilities still override it. */
+@layer components {
+	:focus-visible {
+		@apply focus-ring;
+	}
+}
+
 @layer base {
 	html {
 		@media (min-width: 1024px) {
@@ -39,7 +48,7 @@
 
 	a {
 		@apply hover:underline;
-		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border focus-ring rounded-md;
+		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border rounded-md;
 	}
 
 	/* exempt header and nav links from visited/hover colors (its distracting and i feel visited colors are only really necessary for links in non-navigational copy) */
@@ -66,7 +75,8 @@
 	h1,
 	h2,
 	h3,
-	h4 h5,
+	h4,
+	h5,
 	h6,
 	p,
 	section,

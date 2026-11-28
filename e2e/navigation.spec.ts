@@ -120,6 +120,8 @@ test(
 	async ({ page }) => {
 		await page.goto('/');
 		await expect(page.locator('#nav-toggle')).toBeHidden();
+		// the attribute, not just CSS, so tools that ignore styles skip its "Menu" label too
+		await expect(page.locator('#nav-toggle')).toHaveAttribute('hidden');
 		for (const link of await page.locator('#main-nav a').all()) await expect(link).toBeVisible();
 	}
 );

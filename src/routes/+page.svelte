@@ -1,14 +1,17 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { ArrowRight, Mail } from '@lucide/svelte';
 	import { PostList } from '#lib/components/index.ts';
+	import { currentRole } from '#lib/experience.ts';
 	import { getPosts } from '#lib/posts.ts';
+	import { personJsonLd } from '#lib/seo.ts';
+	import { routes } from '#lib/routes.ts';
 
 	const posts = getPosts();
 	const recentPosts = posts.slice(0, 3);
 
 	const title = 'Julie Mužina | Making things a little better';
-	const description =
-		"Julie Mužina's personal site. Trying to make sense of things, and to make them a little better.";
+	const { description } = routes['/'];
 </script>
 
 <svelte:head>
@@ -16,6 +19,8 @@
 	<meta content={description} name="description" />
 	<meta content={title} property="og:title" />
 	<meta content={description} property="og:description" />
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -- escaped in personJsonLd -->
+	{@html personJsonLd(page.url.origin)}
 </svelte:head>
 
 <div class="my-auto flex flex-col gap-12">
@@ -38,8 +43,8 @@
 			</p>
 			<p>
 				I started out modding games, found my way to building websites for the communities around
-				them, and now write software for a living. Lately I'm getting back into building things just
-				for fun, starting with this (a new personal site, from the ground-up!).
+				them, and now I'm a {currentRole}. Lately I'm getting back into building things just for
+				fun, starting with this (a new personal site, from the ground-up!).
 			</p>
 			<!-- Swap to "More about me" (/about) when ready -->
 			<a

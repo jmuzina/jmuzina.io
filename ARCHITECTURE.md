@@ -12,7 +12,7 @@ How the site is built, and why.
 | Content   | [mdsvex](https://github.com/pngwn/MDsveX) with Prism highlighting                                    |
 | Icons     | [Lucide](https://lucide.dev/), [Boxicons](https://boxicons.com/)                                     |
 | Tests     | Vitest (unit and in-browser components), Playwright (end-to-end and screenshots), axe-core           |
-| Tooling   | pnpm 12, Node 26, ESLint, Prettier, markdownlint-cli2, Vale, Dependabot                              |
+| Tooling   | pnpm 12, Node 26, ESLint, Prettier, markdownlint-cli2, Vale, ShellCheck, Dependabot                  |
 | CI/CD     | GitHub Actions: check, lint, build, test and screenshot diffs, then deploy                           |
 
 ## Client-side rendering is off
@@ -46,7 +46,7 @@ src/
     ├── routes.ts          list of pages (used by nav, breadcrumbs, sitemap, tests)
     ├── sitemap.ts         builds sitemap.xml from the route files
     ├── posts.ts           collects and validates post frontmatter
-    ├── seo.ts             link preview image and structured data for posts
+    ├── seo.ts             link preview image, and structured data for posts and the home page
     ├── feed.ts            builds the Atom feed (feed.xml) from the posts
     ├── llms.ts            builds llms.txt, an index of the site for language models
     ├── page-markdown.ts   the Markdown copy of each page (<page>.md), for llms.txt
@@ -55,7 +55,8 @@ src/
 e2e/                       Playwright tests, uses sitemap to find routes to test automatically
 └── visual.spec.ts-snapshots/   screenshot baselines
 scripts/
-└── e2e-visual.sh          runs the visual tests in the Playwright Docker image
+├── e2e-visual.sh          runs the visual tests in the Playwright Docker image
+└── e2e-visual-container.sh   the part of e2e-visual.sh that runs inside the container
 ```
 
 ## Deployment

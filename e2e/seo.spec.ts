@@ -93,6 +93,30 @@ test('every post describes itself as a blog posting', async ({ page, request }) 
 	}
 });
 
+test('the home page describes Julie as a person, and no other page does', async ({
+	page,
+	request
+}) => {
+	for (const path of await getPagePaths(request)) {
+		await test.step(path, async () => {
+			await page.goto(path);
+			const types = [];
+			for (const block of await page.locator('script[type="application/ld+json"]').all()) {
+				types.push(JSON.parse((await block.textContent())!)['@type']);
+			}
+			expect(types.filter((type) => type === 'Person')).toHaveLength(path === '/' ? 1 : 0);
+		});
+	}
+
+	await page.goto('/');
+	const head = page.locator('head');
+	const jsonLd = head.locator('script[type="application/ld+json"]');
+	await expect(jsonLd).toHaveCount(1);
+	const person = JSON.parse((await jsonLd.textContent())!);
+	expect(person.url).toBe(await only(head, 'link[rel="canonical"]', 'href'));
+	expect(person.image).toBe(await only(head, 'meta[property="og:image"]', 'content'));
+});
+
 test('the feed lists every post', async ({ request }) => {
 	const posts = (await getPagePaths(request)).filter(isPost);
 	const response = await request.get('/feed.xml');
@@ -112,20 +136,27 @@ test('the blog links to the feed', async ({ page, request }) => {
 	expect((await request.get(href!)).status()).toBe(200);
 });
 
-test('llms.txt lists every page and shares the home page summary', async ({ page, request }) => {
+test('llms.txt lists and describes every page, and shares the home page summary', async ({
+	page,
+	request
+}) => {
 	const response = await request.get('/llms.txt');
 	expect(response.status()).toBe(200);
 	const txt = await response.text();
 
-	const links = [...txt.matchAll(/^- \[.+?\]\(([^)]+)\)/gm)].map(
-		(match) => new URL(match[1]).pathname
+	const entries = Object.fromEntries(
+		[...txt.matchAll(/^- \[.+?\]\(([^)]+)\)(?:: (.*))?$/gm)].map((match) => [
+			new URL(match[1]).pathname,
+			match[2]
+		])
 	);
-	const markdownPaths = [];
+	const descriptions: Record<string, string> = {};
 	for (const path of await getPagePaths(request)) {
 		await page.goto(path);
-		markdownPaths.push(await markdownHref(page));
+		const description = await page.locator('head meta[name="description"]').getAttribute('content');
+		descriptions[(await markdownHref(page))!] = description!.replace(/\s+/g, ' ').trim();
 	}
-	expect(links.sort()).toEqual(markdownPaths.sort());
+	expect(entries).toEqual(descriptions);
 
 	await page.goto('/');
 	const description = await page.locator('head meta[name="description"]').getAttribute('content');

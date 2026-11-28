@@ -1,9 +1,11 @@
 import { Briefcase, Newspaper } from '@lucide/svelte';
 import type { Component } from 'svelte';
+import { currentRole } from './experience';
 import { getPosts } from './posts';
 
 export type RouteInfo = {
 	label: string;
+	description: string;
 	nav?: boolean;
 	icon?: Component;
 };
@@ -11,10 +13,19 @@ export type RouteInfo = {
 // routes.spec.ts fails for any page missing here. Blog posts are the exception: they're labeled
 // by their frontmatter title.
 export const routes: Record<string, RouteInfo> = {
-	'/': { label: 'Home' },
-	'/experience': { label: 'Experience', nav: true, icon: Briefcase },
-	'/blog': { label: 'Blog', nav: true, icon: Newspaper },
-	'/privacy': { label: 'Privacy' }
+	'/': {
+		label: 'Home',
+		description:
+			"Julie Mužina's personal site. Trying to make sense of things, and to make them a little better."
+	},
+	'/experience': {
+		label: 'Experience',
+		description: `Professional & Academic history of Julie Mužina (currently a ${currentRole}).`,
+		nav: true,
+		icon: Briefcase
+	},
+	'/blog': { label: 'Blog', description: 'Writing by Julie Mužina.', nav: true, icon: Newspaper },
+	'/privacy': { label: 'Privacy', description: 'Privacy policy' }
 };
 
 export type NavRoute = RouteInfo & { href: string };

@@ -47,7 +47,8 @@ Each item is a way a change can pass CI and still break a rule.
   never reaches the browser.
 - **`export const csr = true`** anywhere. Needs Julie's approval, a comment saying why and a
   row in the ARCHITECTURE.md CSR table. Never in a layout.
-- **Broken without JavaScript.** JS-only controls not hidden with the `js:` variant, or
+- **Broken without JavaScript.** JS-only controls not hidden with the `js:` variant (and
+  the `hidden` attribute, when the control does nothing until its script runs), or
   content only reachable through a script. Native `<details>`, links and forms come first.
 - **Third-party requests:** CDNs, web fonts, embeds, external images, trackers, cookies.
 - **Analytics or data collection changes** without a matching edit to
@@ -79,7 +80,8 @@ Each item is a way a change can pass CI and still break a rule.
 
 Reason it through for keyboard, screen reader, 400% zoom and touch. Axe passing isn't enough.
 
-- No visible focus ring, or a ring that differs from the link style.
+- No visible focus ring, or a ring that differs from the site ring (the `focus-ring`
+  utility) without an entry in the Tab test's allowlist in `e2e/a11y.spec.ts`.
 - Toggles without `aria-expanded` and `aria-controls`, or whose accessible name changes
   with state.
 - `role="menu"` on navigation, missing `aria-current`, icons without `aria-hidden="true"`.
@@ -94,6 +96,11 @@ Reason it through for keyboard, screen reader, 400% zoom and touch. Axe passing 
   `src/**/*.spec.ts`, components in `*.svelte.spec.ts`, inline scripts and cross-page
   behavior in `e2e/`.
 - A test that was weakened, skipped or deleted to get green.
+- Changed or added screenshots in `e2e/visual.spec.ts-snapshots/` that the change doesn't
+  explain, or with no note in the PR description or a commit message that Julie approved
+  them after seeing the `visual-diff` report. A post explains its own page, the home page
+  and the blog index; anything else needs a reason. Treat an unapproved baseline as a test
+  changed to get green.
 - A test that can't fail: it checks the easy case (the last list entry, an in-page `#hash`
   jump, a section that already scrolls to the top). Ask for the mutation-check result if
   the author didn't report one.
@@ -118,8 +125,8 @@ Vale only covers root Markdown, `src` and `e2e`, so check other files (including
 - British spelling, em dashes or en dashes, filler or hype in docs, comments and UI text.
 - New or changed copy in Julie's voice (pages, posts, bio) that wasn't requested, or new
   personal details about Julie.
-- Commit subjects that aren't short, imperative and sentence case, or bodies that don't
-  say why.
+- Commit subjects that aren't short, imperative and sentence case, or an agent's commit
+  without a body that says why. Julie's own commits may have no body.
 
 ## 4. Report
 

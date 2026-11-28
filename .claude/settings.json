@@ -1,0 +1,92 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(gh pr view *)",
+			"Bash(gh pr diff *)",
+			"Bash(gh pr list *)",
+			"Bash(gh pr checks *)",
+			"Bash(gh issue view *)",
+			"Bash(gh issue list *)",
+			"Bash(gh run view *)",
+			"Bash(gh run list *)",
+			"Bash(gh run download *)"
+		],
+		"deny": ["Bash(gh auth token *)", "Bash(gh repo delete *)"],
+		"ask": [
+			"Bash(gh pr create *)",
+			"Bash(gh pr merge *)",
+			"Bash(gh pr close *)",
+			"Bash(gh pr reopen *)",
+			"Bash(gh pr edit *)",
+			"Bash(gh pr ready *)",
+			"Bash(gh pr comment *)",
+			"Bash(gh pr review *)",
+			"Bash(gh issue create *)",
+			"Bash(gh issue comment *)",
+			"Bash(gh issue close *)",
+			"Bash(gh issue reopen *)",
+			"Bash(gh issue edit *)",
+			"Bash(gh issue delete *)",
+			"Bash(gh run rerun *)",
+			"Bash(gh run cancel *)",
+			"Bash(gh run delete *)",
+			"Bash(gh api *)",
+			"Bash(gh alias *)",
+			"Bash(gh auth *)",
+			"Bash(gh cache *)",
+			"Bash(gh extension *)",
+			"Bash(gh gist *)",
+			"Bash(gh label *)",
+			"Bash(gh release *)",
+			"Bash(gh repo *)",
+			"Bash(gh secret *)",
+			"Bash(gh variable *)",
+			"Bash(gh workflow *)",
+			"Bash(git commit *)",
+			"Bash(git * commit)",
+			"Bash(git * commit *)",
+			"Bash(git commit-tree *)",
+			"Bash(git * commit-tree *)",
+			"Bash(git update-ref *)",
+			"Bash(git * update-ref *)",
+			"Bash(git push *)",
+			"Bash(git * push)",
+			"Bash(git * push *)",
+			"Bash(*/git *)",
+			"Bash(sh -c *)",
+			"Bash(bash -c *)",
+			"Bash(zsh -c *)",
+			"Bash(eval *)",
+			"Bash(pnpm add *)",
+			"Edit(/.github/workflows/**)",
+			"Edit(/package.json)",
+			"Edit(/pnpm-lock.yaml)"
+		]
+	},
+	"sandbox": {
+		"allowUnsandboxedCommands": false,
+		"excludedCommands": [
+			"pnpm install --frozen-lockfile --ignore-scripts",
+			"pnpm add *",
+			"pnpm exec playwright install chromium firefox webkit",
+			"pnpm test *",
+			"pnpm test:component *",
+			"pnpm test:e2e *",
+			"git push *",
+			"git fetch *",
+			"git pull *",
+			"git worktree remove *",
+			"git worktree prune",
+			"gh *"
+		],
+		"filesystem": {
+			"denyWrite": ["./.github/workflows", "./package.json", "./pnpm-lock.yaml"]
+		},
+		"network": {
+			"allowLocalBinding": true
+		}
+	},
+	"worktree": {
+		"baseRef": "head"
+	}
+}

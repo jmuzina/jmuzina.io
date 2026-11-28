@@ -16,12 +16,20 @@ export default defineConfig({
 	...base,
 	testMatch: '**/visual.spec.ts',
 	testIgnore: [],
-	// The default per-pixel threshold lets a one-shade color change pass. The image pins
-	// rendering, so there's no noise to tolerate.
+	// The default per-pixel threshold (0.2) lets a one-shade color change pass. The image pins
+	// rendering, so there's no noise to tolerate, except in Chromium (below).
 	expect: { toHaveScreenshot: { threshold: 0 } },
 	reporter: [[process.env.CI ? 'github' : 'list'], ['html', { open: 'never' }]],
 	projects: [
-		{ name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },
+		{
+			name: 'desktop-chromium',
+			use: { ...devices['Desktop Chrome'] },
+			// Chromium shades dotted underlines differently on some launches (gray 128 vs 123);
+			// those pairs match from 0.023. Of the one-step shade changes in the theme and Tailwind's
+			// palettes, 0.03 lets through only stone, slate, gray and olive 50 to 100 and success
+			// 300 to 400, none of which the site uses.
+			expect: { toHaveScreenshot: { threshold: 0.03 } }
+		},
 		{ name: 'mobile-webkit', use: { ...devices['iPhone 15'] } }
 	]
 });

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Envelope, Github, Linkedin, Shield } from '@boxicons/svelte';
 	import { commitDate, commitSha, shortSha, githubRepoUrl } from '#lib/build-info.ts';
+	import { GITHUB_URL, LINKEDIN_URL } from '#lib/profiles.ts';
 
 	const formattedDate = commitDate
 		? new Date(commitDate).toLocaleDateString('en-US', {
@@ -20,7 +21,7 @@
 				<a
 					class="inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
 					aria-label="GitHub"
-					href="https://github.com/jmuzina"
+					href={GITHUB_URL}
 					rel="noopener"
 					target="_blank"
 				>
@@ -31,7 +32,7 @@
 				<a
 					class="inline-flex text-inherit hover:text-brand-light dark:hover:text-brand-dark"
 					aria-label="LinkedIn"
-					href="https://linkedin.com/in/jmuzina"
+					href={LINKEDIN_URL}
 					rel="noopener"
 					target="_blank"
 				>

@@ -106,7 +106,6 @@ function measure({
 		const width = parseFloat(style['outline-width']);
 		const offset = parseFloat(style['outline-offset']);
 		const color = rgba(style['outline-color']);
-		if (style['outline-style'] === 'auto') return result; // the browser's own two-tone ring
 		if (style['outline-style'] === 'none' || width === 0 || color[3] === 0) {
 			result.outline = 'no visible focus outline';
 			return result;

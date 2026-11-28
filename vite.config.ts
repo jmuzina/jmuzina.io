@@ -58,5 +58,8 @@ export default defineConfig({
 			paths: { origin: process.env.SITE_ORIGIN || 'https://jmuzina.io' }
 		}),
 		devtoolsJson()
-	]
+	],
+	// The watcher doesn't read .gitignore. Anchored to the root, because a worktree under
+	// .claude/ runs its own dev server, and `**/.claude/**` would ignore its whole tree.
+	server: { watch: { ignored: [`${fromRoot('./.claude')}/**`] } }
 });

@@ -37,6 +37,21 @@ beforeAll(() => {
 
 afterEach(() => commands.emulateColorScheme('light'));
 
+it('every heading level gets the same text width as paragraphs', () => {
+	const paragraph = document.body.appendChild(document.createElement('p'));
+	const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) =>
+		document.body.appendChild(document.createElement(tag))
+	);
+	const width = getComputedStyle(paragraph).maxWidth;
+
+	expect(width).not.toBe('none');
+	for (const heading of headings) {
+		expect(getComputedStyle(heading).maxWidth, heading.tagName).toBe(width);
+	}
+
+	for (const el of [paragraph, ...headings]) el.remove();
+});
+
 describe.each(['light', 'dark'] as const)('form controls (%s)', (colorScheme) => {
 	beforeEach(async () => {
 		(document.activeElement as HTMLElement | null)?.blur();
@@ -60,17 +75,26 @@ describe.each(['light', 'dark'] as const)('form controls (%s)', (colorScheme) =>
 	it('fields and buttons show the link focus ring, only when focused by keyboard', async () => {
 		const link = document.querySelector('a')!;
 		const controls = [document.querySelector('.input')!, document.querySelector('.btn')!];
+		// Safari only Tabs to links and buttons with Option held
+		const press = (keys: string) =>
+			userEvent.keyboard(server.browser === 'webkit' ? `{Alt>}${keys}{/Alt}` : keys);
 		for (const control of controls) {
-			expect(ring(control)).toEqual(ring(link));
 			expect(getComputedStyle(control).outlineStyle).toBe('none');
 		}
 
 		await userEvent.click(link);
+		const rings = [];
 		for (const control of controls) {
-			// Safari only Tabs to buttons with Option held
-			await userEvent.keyboard(server.browser === 'webkit' ? '{Alt>}{Tab}{/Alt}' : '{Tab}');
+			await press('{Tab}');
 			expect(document.activeElement).toBe(control);
 			expect(getComputedStyle(control).outlineStyle).toBe('solid');
+			rings.push(ring(control));
 		}
+
+		// back to the link by keyboard, so it shows its ring too
+		for (let i = 0; i < controls.length; i++) await press('{Shift>}{Tab}{/Shift}');
+		expect(document.activeElement).toBe(link);
+		expect(getComputedStyle(link).outlineStyle).toBe('solid');
+		for (const controlRing of rings) expect(controlRing).toEqual(ring(link));
 	});
 });

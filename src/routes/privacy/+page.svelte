@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { routes } from '#lib/routes.ts';
+
 	const title = 'Privacy | Julie Mužina';
-	const description = 'Privacy policy';
+	const { description } = routes['/privacy'];
 </script>
 
 <svelte:head>
