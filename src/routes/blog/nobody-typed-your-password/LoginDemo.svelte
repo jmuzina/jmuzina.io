@@ -1,28 +1,54 @@
 <script lang="ts">
-	let { id, variant }: { id: string; variant: 'keystroke' | 'autofill-aware' | 'submit' } =
-		$props();
+	let { id }: { id: string } = $props();
 
-	const captions = {
-		keystroke: 'Demo: the button waits for a keystroke',
-		'autofill-aware': 'Demo: the button waits for input or autofill',
-		submit: 'Demo: the button is always enabled'
-	};
-	const validates = $derived(variant !== 'keystroke');
+	// The first is the default when the URL names no mode, or one that doesn't exist.
+	const modes = [
+		{
+			mode: 'keystroke',
+			label: 'Waits for a keystroke',
+			caption: 'Demo: the button waits for a keystroke'
+		},
+		{ mode: 'submit', label: 'Always enabled', caption: 'Demo: the button is always enabled' },
+		{
+			mode: 'autofill-aware',
+			label: 'Waits for input or autofill',
+			caption: 'Demo: the button waits for input or autofill'
+		}
+	];
 </script>
 
-<figure class="not-prose my-6 rounded-md border border-surface-200-800 p-4">
-	<figcaption class="mb-4 font-semibold">{captions[variant]}</figcaption>
+<figure {id} class="not-prose my-6 rounded-md border border-surface-200-800 p-4">
+	<figcaption class="mb-4 font-semibold">{modes[0].caption}</figcaption>
 
 	<p class="js:hidden">This demo needs JavaScript. The code above shows what it does.</p>
 
-	<div class="hidden js:block" data-login-demo={variant}>
+	<div class="hidden js:block" data-login-demo>
+		<!-- A query string, not a hash: fill on page load needs a real reload, and a hash change
+		     doesn't reload. -->
+		<nav class="mb-4" aria-label="Demo mode">
+			<ul class="flex flex-wrap gap-x-4 text-sm">
+				{#each modes as { mode, label, caption } (mode)}
+					<li>
+						<a
+							class="inline-block py-1 aria-[current=page]:font-semibold aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4"
+							href="?mode={mode}#{id}"
+							data-mode={mode}
+							data-caption={caption}
+						>
+							{label}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+
 		<p class="mb-4 text-sm text-surface-600-400">
 			Use your password manager with a made-up login, or press Simulate autofill to fill it by
 			script, as an extension would.
 		</p>
 		<!-- form.submit() skips the submit handler, and a GET would put the password in the URL.
 		     Outside a <dialog>, method="dialog" submits nowhere. -->
-		<form class="flex flex-col gap-3" method="dialog" novalidate>
+		<form class="flex flex-col gap-3" method="dialog">
 			<label class="label" for="{id}-email">
 				<span class="label-text">Email</span>
 				<input
@@ -34,11 +60,6 @@
 					required
 				/>
 			</label>
-			{#if validates}
-				<p class="text-sm text-error-700 dark:text-error-300" id="{id}-email-error" hidden>
-					Enter your email address.
-				</p>
-			{/if}
 
 			<label class="label" for="{id}-password">
 				<span class="label-text">Password</span>
@@ -51,11 +72,6 @@
 					required
 				/>
 			</label>
-			{#if validates}
-				<p class="text-sm text-error-700 dark:text-error-300" id="{id}-password-error" hidden>
-					Enter your password.
-				</p>
-			{/if}
 
 			<div class="flex flex-wrap gap-2">
 				<button
@@ -85,8 +101,9 @@
 
 	<script>
 		(function () {
-			var root = document.currentScript.parentNode.querySelector('[data-login-demo]');
-			var variant = root.getAttribute('data-login-demo');
+			var figure = document.currentScript.parentNode;
+			var root = figure.querySelector('[data-login-demo]');
+			var links = root.querySelectorAll('[data-mode]');
 			var form = root.querySelector('form');
 			var fields = [form.elements.email, form.elements.password];
 			var button = form.querySelector('[type="submit"]');
@@ -94,6 +111,15 @@
 			var status = form.querySelector('[role="status"]');
 			var log = root.querySelector('[data-log]');
 			var MAX_ENTRIES = 12;
+
+			var requested = new URLSearchParams(location.search).get('mode');
+			var current = links[0];
+			links.forEach(function (link) {
+				if (link.getAttribute('data-mode') === requested) current = link;
+			});
+			var mode = current.getAttribute('data-mode');
+			current.setAttribute('aria-current', 'page');
+			figure.querySelector('figcaption').textContent = current.getAttribute('data-caption');
 
 			// Throws in browsers that don't know the selector
 			function isAutofilled(field) {
@@ -119,12 +145,16 @@
 				while (log.children.length > MAX_ENTRIES) log.removeChild(log.lastChild);
 			}
 
+			// invalid shows whether the browser's validation saw an empty field on the click that
+			// should release a hidden autofilled value.
 			fields.forEach(function (field) {
-				['keydown', 'keyup', 'input', 'change', 'animationstart'].forEach(function (type) {
-					field.addEventListener(type, function (event) {
-						record(type, field, event.isTrusted);
-					});
-				});
+				['keydown', 'keyup', 'input', 'change', 'animationstart', 'invalid'].forEach(
+					function (type) {
+						field.addEventListener(type, function (event) {
+							record(type, field, event.isTrusted);
+						});
+					}
+				);
 			});
 
 			// Built-in fill on load may fire no events at all, so take a look without one.
@@ -148,7 +178,7 @@
 				status.textContent = 'Filled by script, no key presses.';
 			});
 
-			if (variant === 'keystroke') {
+			if (mode === 'keystroke') {
 				button.disabled = true;
 				form.addEventListener('keyup', function () {
 					button.disabled = !fields.every(function (field) {
@@ -157,7 +187,7 @@
 				});
 			}
 
-			if (variant === 'autofill-aware') {
+			if (mode === 'autofill-aware') {
 				var update = function () {
 					button.disabled = !fields.every(function (field) {
 						return field.value !== '' || isAutofilled(field);
@@ -169,28 +199,18 @@
 				update();
 			}
 
+			// invalid doesn't bubble
+			form.addEventListener(
+				'invalid',
+				function () {
+					status.textContent = '';
+				},
+				true
+			);
+
+			// The browser's own validation runs first, so this only sees a form that passed it.
 			form.addEventListener('submit', function (event) {
 				event.preventDefault();
-				var firstInvalid = null;
-
-				if (variant !== 'keystroke') {
-					fields.forEach(function (field) {
-						var valid = field.checkValidity();
-						var error = document.getElementById(field.id + '-error');
-						error.hidden = valid;
-						field.setAttribute('aria-invalid', String(!valid));
-						// A description pointing at a hidden element is still read out
-						if (valid) field.removeAttribute('aria-describedby');
-						else field.setAttribute('aria-describedby', error.id);
-						if (!valid && !firstInvalid) firstInvalid = field;
-					});
-				}
-
-				if (firstInvalid) {
-					status.textContent = '';
-					firstInvalid.focus();
-					return;
-				}
 				fields.forEach(function (field) {
 					record('submit', field);
 				});
