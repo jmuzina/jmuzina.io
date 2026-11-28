@@ -34,7 +34,7 @@ export const defineGitInfo = {
 
 const fromRoot = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
-// Shared with the vitest configs, which otherwise can't import .md files.
+// Shared with vitest.config.ts, which otherwise can't import .md files.
 // mdsvex resolves `layout` paths relative to each Markdown file, so they must be absolute. A named
 // layout applies to every file under a folder of that name: `blog` covers all posts.
 export const svelteOptions = {
