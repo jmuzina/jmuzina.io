@@ -39,7 +39,7 @@ pnpm lint:build      # vale, with spelling, on the built HTML (after build); CI 
 pnpm lint:fix        # fix what the linters can
 pnpm fix             # lint:fix, then check + lint to report what's left
 pnpm test            # test:unit (node) + test:component (in Chromium, Firefox, WebKit)
-pnpm exec vitest run <file>  # one spec; vitest.config.ts runs it in Node or the browsers
+pnpm exec vitest run <file>  # one Node spec; a browser spec: pnpm test:component <file>
 pnpm test:e2e        # playwright against the built site; first: pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e:visual # screenshot diffs in the Playwright Docker image; :update rewrites baselines
 pnpm build           # prerender to build/; fails on broken internal links
@@ -64,8 +64,13 @@ only when the call is that command alone, written as listed: no pipe, redirect, 
 `&&` around it. Anything else that can't run in the sandbox is a finding to report, not a
 step to work around.
 
-- **Tests bind local ports.** The settings allow that, so browser tests and `test:e2e` run
-  sandboxed. If one fails with EPERM, report the sandbox restriction. Don't skip it.
+- **Browser tests run outside the sandbox.** Seatbelt stops Chromium and WebKit from
+  launching, so `pnpm test`, `pnpm test:component` and `pnpm test:e2e` are excluded. Run
+  them as plain commands, with arguments if needed (`pnpm test:component <file>`,
+  `pnpm test:e2e --project desktop-chromium`). A pipe, redirect or `&&` keeps the call
+  sandboxed, where the browsers crash and a run can hang beyond your reach. `test:unit` and
+  Node specs run sandboxed. If a browser test fails with a sandbox error anyway, report it.
+  Don't skip it.
 - **Install without scripts.** `pnpm install` writes the shared pnpm store, which stays out
   of the sandbox on purpose, so don't report this as friction. Run exactly
   `pnpm install --frozen-lockfile --ignore-scripts`, which is excluded, then
