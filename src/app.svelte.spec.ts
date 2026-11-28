@@ -37,6 +37,21 @@ beforeAll(() => {
 
 afterEach(() => commands.emulateColorScheme('light'));
 
+it('every heading level gets the same text width as paragraphs', () => {
+	const paragraph = document.body.appendChild(document.createElement('p'));
+	const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((tag) =>
+		document.body.appendChild(document.createElement(tag))
+	);
+	const width = getComputedStyle(paragraph).maxWidth;
+
+	expect(width).not.toBe('none');
+	for (const heading of headings) {
+		expect(getComputedStyle(heading).maxWidth, heading.tagName).toBe(width);
+	}
+
+	for (const el of [paragraph, ...headings]) el.remove();
+});
+
 describe.each(['light', 'dark'] as const)('form controls (%s)', (colorScheme) => {
 	beforeEach(async () => {
 		(document.activeElement as HTMLElement | null)?.blur();
