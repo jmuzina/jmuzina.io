@@ -96,6 +96,11 @@ Reason it through for keyboard, screen reader, 400% zoom and touch. Axe passing 
   `src/**/*.spec.ts`, components in `*.svelte.spec.ts`, inline scripts and cross-page
   behavior in `e2e/`.
 - A test that was weakened, skipped or deleted to get green.
+- Changed or added screenshots in `e2e/visual.spec.ts-snapshots/` that the change doesn't
+  explain, or with no note in the PR description or a commit message that Julie approved
+  them after seeing the `visual-diff` report. A post explains its own page, the home page
+  and the blog index; anything else needs a reason. Treat an unapproved baseline as a test
+  changed to get green.
 - A test that can't fail: it checks the easy case (the last list entry, an in-page `#hash`
   jump, a section that already scrolls to the top). Ask for the mutation-check result if
   the author didn't report one.
