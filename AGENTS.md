@@ -87,9 +87,9 @@ step to work around.
   `gh run download <run-id> -n visual-baselines -D e2e/visual.spec.ts-snapshots`. A
   screenshot diff is a failing test until Julie says otherwise: one the change doesn't
   explain is a bug to report, not a baseline to update. Commit fetched baselines only after
-  Julie has looked at the `visual-diff` report and approved the change. Julie runs the
-  Docker suite locally; on Apple Silicon it needs Docker Desktop's Rosetta setting, because
-  Chromium crashes under QEMU.
+  Julie has looked at the `visual-diff` report and approved the change, and say so in the
+  commit message. Julie runs the Docker suite locally; on Apple Silicon it needs Docker
+  Desktop's Rosetta setting, because Chromium crashes under QEMU.
 - **Temp files:** `$TMPDIR` differs between sandboxed and excluded commands. When a task
   mixes them, share files through the absolute path of the session scratchpad.
 - **Worktrees:** use Claude Code's built-in ones (`.claude/worktrees/<name>/`). They branch
