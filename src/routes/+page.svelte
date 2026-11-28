@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { ArrowRight, Mail } from '@lucide/svelte';
 	import { PostList } from '#lib/components/index.ts';
 	import { getPosts } from '#lib/posts.ts';
+	import { personJsonLd } from '#lib/seo.ts';
 
 	const posts = getPosts();
 	const recentPosts = posts.slice(0, 3);
@@ -16,6 +18,8 @@
 	<meta content={description} name="description" />
 	<meta content={title} property="og:title" />
 	<meta content={description} property="og:description" />
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -- escaped in personJsonLd -->
+	{@html personJsonLd(page.url.origin)}
 </svelte:head>
 
 <div class="my-auto flex flex-col gap-12">

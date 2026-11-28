@@ -7,6 +7,7 @@ import Page from './+page.svelte';
 const mockPosts = vi.hoisted(() => ({ posts: [] as Post[] }));
 // a plain factory: importing the real module would eagerly load every post (and its layout)
 vi.mock('#lib/posts.ts', () => ({ getPosts: () => mockPosts.posts }));
+vi.mock('$app/state', () => ({ page: { url: new URL('http://localhost/') } }));
 
 const post = (n: number): Post => ({
 	title: `Post ${n}`,

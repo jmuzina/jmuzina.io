@@ -40,6 +40,30 @@ export function blogPostingJsonLd(post: Post, origin: string): string {
 		url,
 		mainEntityOfPage: url
 	};
+	return jsonLdScript(data);
+}
+
+// Copies the current job and school from Experience.svelte and the profile links from
+// Footer.svelte. e2e/seo.spec.ts fails if they drift.
+export function personJsonLd(origin: string): string {
+	return jsonLdScript({
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: AUTHOR,
+		url: new URL('/', origin).href,
+		image: new URL(DEFAULT_IMAGE.src, origin).href,
+		jobTitle: 'Software Engineer',
+		worksFor: { '@type': 'Organization', name: 'Canonical', url: 'https://canonical.com' },
+		alumniOf: {
+			'@type': 'CollegeOrUniversity',
+			name: 'Kent State University',
+			url: 'https://kent.edu'
+		},
+		sameAs: ['https://github.com/jmuzina', 'https://linkedin.com/in/jmuzina']
+	});
+}
+
+function jsonLdScript(data: object): string {
 	// a "</script>" in any value would otherwise end the block early
 	const json = JSON.stringify(data).replace(/</g, '\\u003c');
 	return `<script type="application/ld+json">${json}</script>`;

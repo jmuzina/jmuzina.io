@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Post } from './posts';
-import { blogPostingJsonLd, getSocialImage } from './seo';
+import { blogPostingJsonLd, getSocialImage, personJsonLd } from './seo';
 
 const post: Post = {
 	title: 'A post',
@@ -67,5 +67,17 @@ describe('blogPostingJsonLd', () => {
 		);
 		expect(html.match(/<\/script>/g)).toHaveLength(1);
 		expect(parse(html).headline).toBe('</script><script>alert(1)</script>');
+	});
+});
+
+describe('personJsonLd', () => {
+	it('describes Julie with absolute URLs', () => {
+		expect(parse(personJsonLd('https://jmuzina.io'))).toMatchObject({
+			'@context': 'https://schema.org',
+			'@type': 'Person',
+			name: 'Julie Mužina',
+			url: 'https://jmuzina.io/',
+			image: 'https://jmuzina.io/assets/julie.jpeg'
+		});
 	});
 });
