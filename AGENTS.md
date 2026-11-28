@@ -53,6 +53,13 @@ restriction. Don't skip them.
 
 - **Do only what was asked.** No drive-by refactors, renames, reformatting or extra
   features. Mention other problems you find; don't fix them.
+- **Don't trade the project for the task.** Quality rots when each task steps around what's
+  wrong to get itself done. If something is unwieldy, contradictory or broken for a
+  visitor, a developer or an agent (rules that conflict, docs that don't match the code, a
+  check that can't fail, a step that needs a workaround every time), don't push past it
+  quietly. Report what you hit and what it cost, even if you worked around it, so Julie can
+  ask for a fix or for a brief to hand to another agent. A finished task that hides a
+  problem is worse than one that surfaces it.
 - **Make the smallest change that works.** No speculative abstractions or options. Three
   similar lines beat a premature helper.
 - **Read before editing.** Don't guess at an API, class name or URL. Check
