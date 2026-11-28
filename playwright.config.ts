@@ -12,7 +12,9 @@ export default defineConfig({
 	testIgnore: '**/visual.spec.ts',
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
+	// The retry only tells a flaky test from a consistent failure in the report. Both fail the run.
 	retries: process.env.CI ? 1 : 0,
+	failOnFlakyTests: !!process.env.CI,
 	// Locally, suites from parallel worktrees share the CPU, and Playwright's default (half the
 	// cores each) makes them starve each other into timeouts. Two keeps a timeout a real failure.
 	workers: process.env.CI ? undefined : 2,
