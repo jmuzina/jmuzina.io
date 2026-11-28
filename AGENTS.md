@@ -200,3 +200,5 @@ spell-checks Markdown: fix real typos, and add genuine terms (product names, jar
   `main` is production.
 - **One logical change per commit.** Short, imperative, sentence-case subject matching the
   history (e.g. "Add blog index page"), and a body that explains why.
+- **No co-author trailers.** Never add `Co-Authored-By` or any other attribution line to a
+  commit message.
