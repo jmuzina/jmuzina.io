@@ -20,7 +20,9 @@ How the site is built, and why.
 `csr = false` is set in [`src/routes/+layout.ts`](src/routes/+layout.ts). The browser gets
 prerendered HTML with no Svelte runtime, router or hydration. Interactive pieces are small
 inline scripts. Every link is a full page load, so focus, scroll and screen reader
-announcements are native browser behavior.
+announcements are native browser behavior. In Chromium, speculation rules in
+[`src/app.html`](src/app.html) prefetch a linked page's HTML when the reader is likely to
+follow the link.
 
 Why not site-wide: it would ship framework JavaScript on every page for a few small
 widgets, and the client router would have to reimplement behavior full page loads already
