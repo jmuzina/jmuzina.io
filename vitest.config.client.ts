@@ -19,6 +19,9 @@ export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(svelteOptions)],
 	test: {
 		name: 'client',
+		// Per browser. Locally, suites from parallel worktrees share the CPU, and the default makes
+		// Firefox, axe and userEvent tests time out. Two keeps a timeout a real failure.
+		maxWorkers: process.env.CI ? undefined : 2,
 		browser: {
 			enabled: true,
 			provider: playwright(),

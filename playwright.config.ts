@@ -13,6 +13,9 @@ export default defineConfig({
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
+	// Locally, suites from parallel worktrees share the CPU, and Playwright's default (half the
+	// cores each) makes them starve each other into timeouts. Two keeps a timeout a real failure.
+	workers: process.env.CI ? undefined : 2,
 	reporter: process.env.CI ? 'github' : 'list',
 	use: {
 		baseURL: `http://localhost:${port}`,
