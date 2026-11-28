@@ -156,6 +156,7 @@ jobs:
           install: false
 
       - name: Run visual tests
+        id: visual
         run: pnpm exec playwright test --config playwright.visual.config.ts
 
       - name: Upload visual diff report
@@ -164,6 +165,20 @@ jobs:
         with:
           name: visual-diff
           path: playwright-report
+
+      # Gives a change that moves pixels (a new post, say) its baselines without Docker on the
+      # author's machine, or an agent leaving its sandbox to reach Docker. Runs after the report
+      # upload because it overwrites playwright-report.
+      - name: Update visual baselines
+        if: failure() && steps.visual.outcome == 'failure'
+        run: pnpm exec playwright test --config playwright.visual.config.ts --update-snapshots
+
+      - name: Upload visual baselines
+        if: failure() && steps.visual.outcome == 'failure'
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-baselines
+          path: e2e/visual.spec.ts-snapshots
 
   deploy:
     name: Deploy to ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
