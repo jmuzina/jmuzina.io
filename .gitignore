@@ -27,6 +27,10 @@ storybook-static
 
 .idea/
 
+# Claude Code: local settings, and worktrees that are full copies of the repo. Prettier,
+# ESLint, markdownlint and Tailwind read this file, so it keeps them out too.
+/.claude/
+
 # Playwright
 /test-results/
 /playwright-report/
