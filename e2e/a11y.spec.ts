@@ -156,6 +156,44 @@ test('Tab reaches everything on every page and always shows where focus is', asy
 	}
 });
 
+test('a keyboard-focused link shows the site focus ring, not the browser one', async ({
+	page,
+	browserName
+}) => {
+	await page.goto('/privacy');
+	await openNavIfCollapsed(page);
+	// inline outline-style, because an outline that isn't drawn may report a 0 width
+	const ring = await page.evaluate(() => {
+		const probe = document.createElement('span');
+		probe.className = 'focus-ring';
+		probe.style.outlineStyle = 'solid';
+		document.body.append(probe);
+		const cs = getComputedStyle(probe);
+		const ring = { width: cs.outlineWidth, offset: cs.outlineOffset, color: cs.outlineColor };
+		probe.remove();
+		return ring;
+	});
+
+	const links = [
+		page.getByRole('navigation', { name: 'Main' }).getByRole('link').first(),
+		page.locator('main a[href="https://matomo.org"]'),
+		page.locator('main a[href^="mailto:"]')
+	];
+	for (const link of links) {
+		await test.step((await link.textContent())!.trim(), async () => {
+			const isFocused = () => link.evaluate((el) => el === document.activeElement);
+			for (let presses = 0; presses < 50 && !(await isFocused()); presses++) {
+				await page.keyboard.press(tabKey(browserName));
+			}
+			await expect(link).toBeFocused();
+			await expect(link).toHaveCSS('outline-style', 'solid');
+			await expect(link).toHaveCSS('outline-width', ring.width);
+			await expect(link).toHaveCSS('outline-offset', ring.offset);
+			await expect(link).toHaveCSS('outline-color', ring.color);
+		});
+	}
+});
+
 test('every page reflows at 320px wide with nothing pinned to the screen', async ({
 	page,
 	request,
