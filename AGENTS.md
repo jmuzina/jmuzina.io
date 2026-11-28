@@ -49,6 +49,10 @@ call each other with `pnpm run`.
 Browser tests and `test:e2e` bind local ports. If they fail with EPERM, report the sandbox
 restriction. Don't skip them.
 
+`pnpm install`, `--offline` included, fails in a sandbox that can't write the shared pnpm
+store. Run it outside the sandbox, including in a new worktree. Keeping the store out of
+the sandbox is deliberate, so don't report this as friction.
+
 ## How to work
 
 - **Do only what was asked.** No drive-by refactors, renames, reformatting or extra
