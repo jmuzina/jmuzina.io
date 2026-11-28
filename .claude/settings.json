@@ -1,0 +1,22 @@
+{
+	"permissions": {
+		"ask": [
+			"Bash(git commit)",
+			"Bash(git commit *)",
+			"Bash(git push)",
+			"Bash(git push *)",
+			"Bash(pnpm add *)",
+			"Edit(/.github/workflows/**)",
+			"Edit(/package.json)",
+			"Edit(/pnpm-lock.yaml)"
+		]
+	},
+	"sandbox": {
+		"network": {
+			"allowLocalBinding": true
+		}
+	},
+	"worktree": {
+		"baseRef": "head"
+	}
+}
