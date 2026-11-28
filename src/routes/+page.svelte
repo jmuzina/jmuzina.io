@@ -4,13 +4,13 @@
 	import { PostList } from '#lib/components/index.ts';
 	import { getPosts } from '#lib/posts.ts';
 	import { personJsonLd } from '#lib/seo.ts';
+	import { routes } from '#lib/routes.ts';
 
 	const posts = getPosts();
 	const recentPosts = posts.slice(0, 3);
 
 	const title = 'Julie Mužina | Making things a little better';
-	const description =
-		"Julie Mužina's personal site. Trying to make sense of things, and to make them a little better.";
+	const { description } = routes['/'];
 </script>
 
 <svelte:head>

@@ -1,13 +1,9 @@
 import { markdownPath } from './page-markdown';
 import type { Post } from './posts';
+import { routes } from './routes';
 import { AUTHOR } from './seo';
 
-// The home page's meta description, so this adds no copy of its own. e2e/seo.spec.ts keeps them
-// in sync.
-export const SITE_SUMMARY =
-	"Julie Mužina's personal site. Trying to make sense of things, and to make them a little better.";
-
-export type LlmsPage = { path: string; label: string };
+export type LlmsPage = { path: string; label: string; description: string };
 
 const linkText = (text: string) => text.replace(/[\\[\]]/g, '\\$&');
 const oneLine = (text: string) => text.replace(/\s+/g, ' ').trim();
@@ -20,8 +16,11 @@ export function buildLlmsTxt(origin: string, pages: LlmsPage[], posts: Post[]): 
 
 	const sections = [
 		`# ${AUTHOR}`,
-		`> ${SITE_SUMMARY}`,
-		['## Pages', ...pages.map((page) => link(page.label, page.path))].join('\n')
+		`> ${routes['/'].description}`,
+		[
+			'## Pages',
+			...pages.map((page) => `${link(page.label, page.path)}: ${oneLine(page.description)}`)
+		].join('\n')
 	];
 	if (posts.length) {
 		sections.push(

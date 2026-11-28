@@ -161,20 +161,27 @@ test('the blog links to the feed', async ({ page, request }) => {
 	expect((await request.get(href!)).status()).toBe(200);
 });
 
-test('llms.txt lists every page and shares the home page summary', async ({ page, request }) => {
+test('llms.txt lists and describes every page, and shares the home page summary', async ({
+	page,
+	request
+}) => {
 	const response = await request.get('/llms.txt');
 	expect(response.status()).toBe(200);
 	const txt = await response.text();
 
-	const links = [...txt.matchAll(/^- \[.+?\]\(([^)]+)\)/gm)].map(
-		(match) => new URL(match[1]).pathname
+	const entries = Object.fromEntries(
+		[...txt.matchAll(/^- \[.+?\]\(([^)]+)\)(?:: (.*))?$/gm)].map((match) => [
+			new URL(match[1]).pathname,
+			match[2]
+		])
 	);
-	const markdownPaths = [];
+	const descriptions: Record<string, string> = {};
 	for (const path of await getPagePaths(request)) {
 		await page.goto(path);
-		markdownPaths.push(await markdownHref(page));
+		const description = await page.locator('head meta[name="description"]').getAttribute('content');
+		descriptions[(await markdownHref(page))!] = description!.replace(/\s+/g, ' ').trim();
 	}
-	expect(links.sort()).toEqual(markdownPaths.sort());
+	expect(entries).toEqual(descriptions);
 
 	await page.goto('/');
 	const description = await page.locator('head meta[name="description"]').getAttribute('content');

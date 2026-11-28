@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Experience } from '#lib/components/index.ts';
+	import { routes } from '#lib/routes.ts';
 	const title = 'Experience | Julie Mužina';
-	const description =
-		'Professional & Academic history of Julie Mužina (currently a software engineer at Canonical).';
+	const { description } = routes['/experience'];
 </script>
 
 <svelte:head>

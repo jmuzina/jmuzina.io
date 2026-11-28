@@ -3,9 +3,10 @@
 	import { PostList } from '#lib/components/index.ts';
 	import { FEED_PATH } from '#lib/feed.ts';
 	import { getPosts } from '#lib/posts.ts';
+	import { routes } from '#lib/routes.ts';
 
 	const title = 'Blog | Julie Mužina';
-	const description = 'Writing by Julie Mužina.';
+	const { description } = routes['/blog'];
 
 	const posts = getPosts();
 </script>
