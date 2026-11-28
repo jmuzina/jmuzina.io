@@ -47,7 +47,10 @@ New scripts follow `task`, `task:scope`, `task:mode` (e.g. `test:unit:watch`), a
 call each other with `pnpm run`.
 
 `test:e2e` serves the build on port 4173 and reuses a server already there. Set `E2E_PORT` to
-a free port when another checkout may be running e2e.
+a free port when another checkout may be running e2e. When several suites share the machine,
+also run `pnpm test --maxWorkers 2` and `pnpm test:e2e --workers 2`: CPU contention makes
+Firefox, axe and `userEvent` tests (and the e2e build) time out. Rerun a timeout under that load
+with fewer workers before calling it a failure.
 
 Browser tests and `test:e2e` bind local ports. If they fail with EPERM, report the sandbox
 restriction. Don't skip them.
