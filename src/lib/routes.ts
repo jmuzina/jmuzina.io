@@ -4,7 +4,6 @@ import { getPosts } from './posts';
 
 export type RouteInfo = {
 	label: string;
-	// the page's meta description, which llms.txt also lists
 	description: string;
 	nav?: boolean;
 	icon?: Component;
