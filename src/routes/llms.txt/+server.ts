@@ -13,6 +13,6 @@ const pages = getPagePathnames()
 
 // url.origin is paths.origin at build time (see vite.config.ts)
 export const GET: RequestHandler = ({ url }) =>
-	new Response(buildLlmsTxt(url.origin, pages, posts), {
+	new Response(buildLlmsTxt(url.origin, routes['/'].description, pages, posts), {
 		headers: { 'Content-Type': 'text/markdown; charset=utf-8' }
 	});

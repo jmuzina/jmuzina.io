@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { ArrowRight, Mail } from '@lucide/svelte';
 	import { PostList } from '#lib/components/index.ts';
+	import { currentRole } from '#lib/experience.ts';
 	import { getPosts } from '#lib/posts.ts';
 	import { personJsonLd } from '#lib/seo.ts';
 	import { routes } from '#lib/routes.ts';
@@ -42,8 +43,8 @@
 			</p>
 			<p>
 				I started out modding games, found my way to building websites for the communities around
-				them, and now I'm a software engineer at Canonical. Lately I'm getting back into building
-				things just for fun, starting with this (a new personal site, from the ground-up!).
+				them, and now I'm a {currentRole}. Lately I'm getting back into building things just for
+				fun, starting with this (a new personal site, from the ground-up!).
 			</p>
 			<!-- Swap to "More about me" (/about) when ready -->
 			<a

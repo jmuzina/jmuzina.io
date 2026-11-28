@@ -93,7 +93,6 @@ test('every post describes itself as a blog posting', async ({ page, request }) 
 	}
 });
 
-// Its fields copy what the pages show, so they're checked against those pages.
 test('the home page describes Julie as a person, and no other page does', async ({
 	page,
 	request
@@ -116,30 +115,6 @@ test('the home page describes Julie as a person, and no other page does', async 
 	const person = JSON.parse((await jsonLd.textContent())!);
 	expect(person.url).toBe(await only(head, 'link[rel="canonical"]', 'href'));
 	expect(person.image).toBe(await only(head, 'meta[property="og:image"]', 'content'));
-
-	const footer = page.locator('footer');
-	const profiles = [];
-	for (const name of ['GitHub', 'LinkedIn']) {
-		profiles.push(await footer.getByRole('link', { name, exact: true }).getAttribute('href'));
-	}
-	expect(person.sameAs).toEqual(profiles);
-
-	await page.goto('/experience');
-	const section = (name: string) =>
-		page.locator('section').filter({ has: page.getByRole('heading', { level: 2, name }) });
-
-	const currentJob = section('Experience')
-		.getByRole('listitem')
-		.filter({ hasText: 'Present' })
-		.getByRole('heading', { level: 3 });
-	await expect(currentJob).toHaveCount(1);
-	await expect(currentJob).toHaveText(`${person.jobTitle} at ${person.worksFor.name}`);
-	await expect(currentJob.getByRole('link')).toHaveAttribute('href', person.worksFor.url);
-
-	const school = section('Education').getByRole('heading', { level: 3 }).getByRole('link');
-	await expect(school).toHaveCount(1);
-	await expect(school).toHaveText(person.alumniOf.name);
-	await expect(school).toHaveAttribute('href', person.alumniOf.url);
 });
 
 test('the feed lists every post', async ({ request }) => {

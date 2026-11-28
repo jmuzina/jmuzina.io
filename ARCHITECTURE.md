@@ -46,7 +46,7 @@ src/
     ├── routes.ts          list of pages (used by nav, breadcrumbs, sitemap, tests)
     ├── sitemap.ts         builds sitemap.xml from the route files
     ├── posts.ts           collects and validates post frontmatter
-    ├── seo.ts             link preview image and structured data for posts
+    ├── seo.ts             link preview image, and structured data for posts and the home page
     ├── feed.ts            builds the Atom feed (feed.xml) from the posts
     ├── llms.ts            builds llms.txt, an index of the site for language models
     ├── page-markdown.ts   the Markdown copy of each page (<page>.md), for llms.txt

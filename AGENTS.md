@@ -97,7 +97,9 @@ the sandbox is deliberate, so don't report this as friction.
     scroll, and the e2e suite passes
 - **Everything works without JavaScript.** Start from native HTML (`<details>`, links,
   forms). Hide JS-only UI with the `js:` variant; `app.html` sets the `.js` class before
-  first paint, so nothing flashes.
+  first paint, so nothing flashes. A control that does nothing until its own script runs
+  also gets the `hidden` attribute, which that script removes, so it never shows without
+  its behavior (see the nav toggle).
 - **New pages go in `src/lib/routes.ts`.** Nav and breadcrumbs read it, and
   `routes.spec.ts` fails without an entry. Each page sets `<title>Page | Julie Mužina</title>`
   and has exactly one `<h1>`.
@@ -127,11 +129,12 @@ the sandbox is deliberate, so don't report this as friction.
 
 WCAG 2.2 AA is the minimum.
 
-- **Keyboard first.** Everything is operable by keyboard with a visible focus ring (reuse
-  the link style). Escape closes a disclosure only when focus is inside it, then returns
+- **Keyboard first.** Everything is operable by keyboard with a visible focus ring: the
+  site ring, the `focus-ring` utility. Escape closes a disclosure only when focus is inside it, then returns
   focus to its toggle.
 - **The focus ring is a default in `@layer components`**, not `base`, where preflight's
-  `:-moz-focusring { outline: auto }` can win in Firefox. The Tab test in `e2e/a11y.spec.ts`
+  `:-moz-focusring { outline: auto }` can win in Firefox, so elements get it without a
+  class. The Tab test in `e2e/a11y.spec.ts`
   fails any other ring that isn't on its allowlist.
 - **Real names, roles and states.** Native elements first. Toggles get
   `aria-expanded`/`aria-controls` and a stable accessible name. Use `aria-current` for
@@ -199,6 +202,7 @@ spell-checks Markdown: fix real typos, and add genuine terms (product names, jar
 - **Don't commit or push unless asked.** Branch off `dev` (deploys to dev.jmuzina.io);
   `main` is production.
 - **One logical change per commit.** Short, imperative, sentence-case subject matching the
-  history (e.g. "Add blog index page"), and a body that explains why.
+  history (e.g. "Add blog index page"). An agent's commit, or a message it drafts, also gets
+  a body that explains why. Julie's own commits may have none.
 - **No co-author trailers.** Never add `Co-Authored-By` or any other attribution line to a
   commit message.

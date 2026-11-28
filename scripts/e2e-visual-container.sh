@@ -15,4 +15,4 @@ cp -R e2e/visual.spec.ts-snapshots/. /out/snapshots/
 rm -rf /out/report/* && cp -R playwright-report/. /out/report/
 rm -rf /out/test-results/* && cp -R test-results/. /out/test-results/
 chown -R "$HOST_UID:$HOST_GID" /out/test-results
-exit $status
+exit "$status"

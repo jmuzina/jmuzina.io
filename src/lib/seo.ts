@@ -1,4 +1,6 @@
+import { currentJob, educations } from './experience';
 import type { Post } from './posts';
+import { GITHUB_URL, LINKEDIN_URL } from './profiles';
 
 export const AUTHOR = 'Julie Mužina';
 
@@ -43,8 +45,6 @@ export function blogPostingJsonLd(post: Post, origin: string): string {
 	return jsonLdScript(data);
 }
 
-// Copies the current job and school from Experience.svelte and the profile links from
-// Footer.svelte. e2e/seo.spec.ts fails if they drift.
 export function personJsonLd(origin: string): string {
 	return jsonLdScript({
 		'@context': 'https://schema.org',
@@ -52,14 +52,16 @@ export function personJsonLd(origin: string): string {
 		name: AUTHOR,
 		url: new URL('/', origin).href,
 		image: new URL(DEFAULT_IMAGE.src, origin).href,
-		jobTitle: 'Software Engineer',
-		worksFor: { '@type': 'Organization', name: 'Canonical', url: 'https://canonical.com' },
-		alumniOf: {
-			'@type': 'CollegeOrUniversity',
-			name: 'Kent State University',
-			url: 'https://kent.edu'
-		},
-		sameAs: ['https://github.com/jmuzina', 'https://linkedin.com/in/jmuzina']
+		jobTitle: currentJob.title,
+		worksFor: { '@type': 'Organization', name: currentJob.company, url: currentJob.websiteUrl },
+		alumniOf: educations
+			.filter((education) => education.endDate)
+			.map((education) => ({
+				'@type': 'CollegeOrUniversity',
+				name: education.institution,
+				url: education.websiteUrl
+			})),
+		sameAs: [GITHUB_URL, LINKEDIN_URL]
 	});
 }
 

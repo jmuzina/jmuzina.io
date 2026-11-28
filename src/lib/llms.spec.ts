@@ -15,9 +15,9 @@ const post: Post = {
 
 describe('buildLlmsTxt', () => {
 	it('starts with the site name and summary, then links and describes the Markdown copy of each page and post', () => {
-		expect(buildLlmsTxt('https://jmuzina.io', pages, [post])).toBe(`# Julie Mužina
+		expect(buildLlmsTxt('https://jmuzina.io', 'A summary.', pages, [post])).toBe(`# Julie Mužina
 
-> Julie Mužina's personal site. Trying to make sense of things, and to make them a little better.
+> A summary.
 
 ## Pages
 - [Home](https://jmuzina.io/index.html.md): The home page
@@ -29,12 +29,13 @@ describe('buildLlmsTxt', () => {
 	});
 
 	it('leaves out the blog section when there are no posts', () => {
-		expect(buildLlmsTxt('https://jmuzina.io', pages, [])).not.toContain('## Blog');
+		expect(buildLlmsTxt('https://jmuzina.io', 'A summary.', pages, [])).not.toContain('## Blog');
 	});
 
 	it('keeps titles from breaking their links and descriptions on one line', () => {
 		const txt = buildLlmsTxt(
 			'https://jmuzina.io',
+			'A summary.',
 			[{ path: '/privacy', label: 'Privacy [policy]', description: 'Two\nlines' }],
 			[{ ...post, title: 'Arrays [and] such', description: 'Two\nlines' }]
 		);

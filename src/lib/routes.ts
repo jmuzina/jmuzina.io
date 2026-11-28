@@ -1,5 +1,6 @@
 import { Briefcase, Newspaper } from '@lucide/svelte';
 import type { Component } from 'svelte';
+import { currentRole } from './experience';
 import { getPosts } from './posts';
 
 export type RouteInfo = {
@@ -19,8 +20,7 @@ export const routes: Record<string, RouteInfo> = {
 	},
 	'/experience': {
 		label: 'Experience',
-		description:
-			'Professional & Academic history of Julie Mužina (currently a software engineer at Canonical).',
+		description: `Professional & Academic history of Julie Mužina (currently a ${currentRole}).`,
 		nav: true,
 		icon: Briefcase
 	},

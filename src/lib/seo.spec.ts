@@ -1,6 +1,24 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import type { Education } from './experience';
 import type { Post } from './posts';
 import { blogPostingJsonLd, getSocialImage, personJsonLd } from './seo';
+
+const experience = vi.hoisted(() => {
+	const school = (institution: string, endDate?: Date): Education => ({
+		institution,
+		location: 'Somewhere',
+		websiteUrl: `https://${institution.toLowerCase()}.edu`,
+		program: 'B.S',
+		startDate: new Date('2018-01-01'),
+		endDate,
+		grade: '4.0'
+	});
+	return {
+		currentJob: { company: 'Acme', title: 'Engineer', websiteUrl: 'https://acme.test' },
+		educations: [school('Finished', new Date('2022-01-01')), school('Ongoing')]
+	};
+});
+vi.mock('./experience', () => experience);
 
 const post: Post = {
 	title: 'A post',
@@ -78,6 +96,15 @@ describe('personJsonLd', () => {
 			name: 'Julie Mužina',
 			url: 'https://jmuzina.io/',
 			image: 'https://jmuzina.io/assets/julie.jpeg'
+		});
+	});
+
+	it('names the current job, finished schools and profiles', () => {
+		expect(parse(personJsonLd('https://jmuzina.io'))).toMatchObject({
+			jobTitle: 'Engineer',
+			worksFor: { '@type': 'Organization', name: 'Acme', url: 'https://acme.test' },
+			alumniOf: [{ '@type': 'CollegeOrUniversity', name: 'Finished', url: 'https://finished.edu' }],
+			sameAs: ['https://github.com/jmuzina', 'https://linkedin.com/in/jmuzina']
 		});
 	});
 });
