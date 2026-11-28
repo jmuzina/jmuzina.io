@@ -58,39 +58,46 @@ you think load caused it, say what else was running.
 
 ## Sandbox and environment
 
-Commands run in a sandbox. Leave it only for the steps below that can't run inside it, one
-command at a time, and never to get past a failure you haven't diagnosed.
+Every command runs in the sandbox. `.claude/settings.json` turns off the unsandboxed retry,
+so `dangerouslyDisableSandbox` does nothing. Only its `excludedCommands` run outside, and
+only when the call is that command alone, written as listed: no pipe, redirect, `cd` or
+`&&` around it. Anything else that can't run in the sandbox is a finding to report, not a
+step to work around.
 
-- **Tests bind local ports.** `.claude/settings.json` allows that, so browser tests and
-  `test:e2e` run sandboxed. If one fails with EPERM, report the sandbox restriction. Don't
-  skip it.
-- **Install outside the sandbox, without scripts.** `pnpm install` writes the shared pnpm
-  store, which stays out of the sandbox on purpose, so don't report this as friction. Run
-  `pnpm install --frozen-lockfile --ignore-scripts` unsandboxed, then `pnpm run prepare`
-  sandboxed. A new worktree has no `node_modules`, so it needs this first. Without
-  `--ignore-scripts`, install runs `prepare` (`svelte-kit sync`), which loads
-  `vite.config.ts` and code under `src/`: working-tree code would run outside the sandbox.
+- **Tests bind local ports.** The settings allow that, so browser tests and `test:e2e` run
+  sandboxed. If one fails with EPERM, report the sandbox restriction. Don't skip it.
+- **Install without scripts.** `pnpm install` writes the shared pnpm store, which stays out
+  of the sandbox on purpose, so don't report this as friction. Run exactly
+  `pnpm install --frozen-lockfile --ignore-scripts`, which is excluded, then
+  `pnpm run prepare`. A new worktree has no `node_modules`, so it needs this first. Without
+  `--ignore-scripts`, install would run `prepare` (`svelte-kit sync`) outside the sandbox,
+  and that loads `vite.config.ts` and code under `src/`. After a Playwright upgrade, run
+  exactly `pnpm exec playwright install chromium firefox webkit`.
 - **Node 26.10 is pinned** (`devEngines`). With another Node on `PATH`, pnpm downloads 26.10.
   Use `pnpm exec`, not `npx`, which runs the system Node.
 - **Don't hunt for or kill processes.** A sandboxed command can't see or signal processes it
   didn't start. Playwright starts and stops its own preview server and fails rather than
   reuse one, so a busy port means another checkout's run: set `E2E_PORT` or report it.
-- **Visual baselines come from CI.** `pnpm test:e2e:visual` needs Docker, which the sandbox
-  can't reach. Don't leave the sandbox for it. When screenshots differ, CI's visual job
-  uploads the updated baselines as the `visual-baselines` artifact. With Julie's approval
-  to push, fetch them with
+- **GitHub is outside the sandbox.** Sandboxed commands can't reach it. `git push`,
+  `git fetch`, `git pull` and `gh` are excluded, so run them as plain commands. A push
+  written another way (`/usr/bin/git push`, `sh -c 'git push'`) stays sandboxed and fails.
+- **Visual baselines come from CI.** `pnpm test:e2e:visual` needs Docker, which agents
+  can't run. When screenshots differ, CI's visual job uploads the updated baselines as the
+  `visual-baselines` artifact. With Julie's approval to push, fetch them with
   `gh run download <run-id> -n visual-baselines -D e2e/visual.spec.ts-snapshots`, check
-  them against the `visual-diff` report and commit them. Running it locally on Apple
-  Silicon needs Docker Desktop's Rosetta setting: Chromium crashes under QEMU.
-- **Temp files:** `$TMPDIR` differs between sandboxed and unsandboxed commands. When a task
-  mixes both, share files through the absolute path of the session scratchpad.
+  them against the `visual-diff` report and commit them. Julie runs the Docker suite
+  locally; on Apple Silicon it needs Docker Desktop's Rosetta setting, because Chromium
+  crashes under QEMU.
+- **Temp files:** `$TMPDIR` differs between sandboxed and excluded commands. When a task
+  mixes them, share files through the absolute path of the session scratchpad.
 - **Worktrees:** use Claude Code's built-in ones (`.claude/worktrees/<name>/`). They branch
   from the current `HEAD` (`worktree.baseRef` in `.claude/settings.json`), and the sandbox
-  lets the session write them. A worktree made with plain `git worktree add` isn't the
-  session's own, so its git writes need unsandboxed commands.
-- **Commits are GPG-signed**, and `gpg` can't reach its agent from the sandbox. When asked
-  to commit, run `git commit` unsandboxed. If `pinentry` prompts, stop and ask Julie to
-  unlock `gpg-agent`. Don't turn signing off unless she says so.
+  lets the session write them. Plain `git worktree add` can't run: the sandbox keeps
+  `.git/worktrees` read-only. `git worktree remove` is excluded.
+- **Commit unsigned.** Julie signs her own commits with GPG, but `gpg` can't reach its agent
+  from the sandbox. When asked to commit, use `git -c commit.gpgsign=false commit`, and
+  `git rebase --no-gpg-sign` for a rebase, because `-c commit.gpgsign=false` doesn't reach
+  `rebase --continue`. Both run sandboxed.
 
 ## How to work
 

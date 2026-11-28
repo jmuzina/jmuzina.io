@@ -64,6 +64,18 @@
 		]
 	},
 	"sandbox": {
+		"allowUnsandboxedCommands": false,
+		"excludedCommands": [
+			"pnpm install --frozen-lockfile --ignore-scripts",
+			"pnpm add *",
+			"pnpm exec playwright install chromium firefox webkit",
+			"git push *",
+			"git fetch *",
+			"git pull *",
+			"git worktree remove *",
+			"git worktree prune",
+			"gh *"
+		],
 		"filesystem": {
 			"denyWrite": ["./.github/workflows", "./package.json", "./pnpm-lock.yaml"]
 		},
