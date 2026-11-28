@@ -12,7 +12,7 @@ How the site is built, and why.
 | Content   | [mdsvex](https://github.com/pngwn/MDsveX) with Prism highlighting                                    |
 | Icons     | [Lucide](https://lucide.dev/), [Boxicons](https://boxicons.com/)                                     |
 | Tests     | Vitest (unit and in-browser components), Playwright (end-to-end and screenshots), axe-core           |
-| Tooling   | pnpm 12, Node 26, ESLint, Prettier, markdownlint-cli2, Vale, Dependabot                              |
+| Tooling   | pnpm 12, Node 26, ESLint, Prettier, markdownlint-cli2, Vale, ShellCheck, Dependabot                  |
 | CI/CD     | GitHub Actions: check, lint, build, test and screenshot diffs, then deploy                           |
 
 ## Client-side rendering is off
