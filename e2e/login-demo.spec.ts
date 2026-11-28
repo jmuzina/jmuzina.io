@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { tabKey } from './helpers';
 
 const POST = '/blog/nobody-typed-your-password';
 
@@ -75,6 +76,7 @@ test.describe('the input-or-autofill demo', () => {
 test.describe('the always-enabled demo', () => {
 	test('explains empty fields on submit and moves focus to the first', async ({ page }) => {
 		const demo = submit(page);
+		await expect(demo.getByLabel('Email')).toHaveAccessibleDescription('');
 		await demo.getByRole('button', { name: 'Log in' }).click();
 
 		await expect(demo.getByLabel('Email')).toBeFocused();
@@ -92,8 +94,61 @@ test.describe('the always-enabled demo', () => {
 
 		await expect(demo.getByRole('status')).toHaveText('Logged in. (Not really: nothing was sent.)');
 		await expect(demo.getByText('Enter your email address.')).toBeHidden();
+		await expect(demo.getByLabel('Email')).toHaveAccessibleDescription('');
 		await expect(demo.getByLabel('Password')).toHaveAttribute('aria-invalid', 'false');
 	});
+
+	test('every control shows the link focus ring', async ({ page, browserName }) => {
+		const ring = await page.evaluate(() => {
+			const link = document.createElement('a');
+			link.href = '#';
+			document.querySelector('main')!.append(link);
+			const style = getComputedStyle(link);
+			const ring = {
+				'outline-width': style.outlineWidth,
+				'outline-color': style.outlineColor,
+				'outline-offset': style.outlineOffset
+			};
+			link.remove();
+			return ring;
+		});
+		const demo = submit(page);
+		const controls = [
+			demo.getByLabel('Email'),
+			demo.getByLabel('Password'),
+			demo.getByRole('button', { name: 'Simulate autofill' }),
+			demo.getByRole('button', { name: 'Log in' })
+		];
+
+		await controls[0].click();
+		for (const control of controls) {
+			await expect(control).toBeFocused();
+			await expect(control).toHaveCSS('outline-style', 'solid');
+			for (const [property, value] of Object.entries(ring)) {
+				await expect(control).toHaveCSS(property, value);
+			}
+			await page.keyboard.press(tabKey(browserName));
+		}
+	});
+});
+
+test('a script calling form.submit() sends nothing', async ({ page }) => {
+	const leaked = page.waitForRequest(/[?&]password=/, { timeout: 2000 }).then(
+		() => true,
+		() => false
+	);
+	for (const demo of [keystroke(page), autofillAware(page), submit(page)]) {
+		await demo.getByRole('button', { name: 'Simulate autofill' }).click();
+		await demo.locator('form').evaluate((form: HTMLFormElement) => {
+			try {
+				form.submit();
+			} catch {
+				// Firefox throws for a dialog form outside a <dialog>, which is also fine
+			}
+		});
+	}
+
+	expect(await leaked).toBe(false);
 });
 
 test('without JavaScript the demos say they need it', { tag: '@no-js' }, async ({ page }) => {

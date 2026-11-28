@@ -20,7 +20,9 @@
 			Use your password manager with a made-up login, or press Simulate autofill to fill it by
 			script, as an extension would.
 		</p>
-		<form class="flex flex-col gap-3" novalidate>
+		<!-- form.submit() skips the submit handler, and a GET would put the password in the URL.
+		     Outside a <dialog>, method="dialog" submits nowhere. -->
+		<form class="flex flex-col gap-3" method="dialog" novalidate>
 			<label class="label" for="{id}-email">
 				<span class="label-text">Email</span>
 				<input
@@ -30,7 +32,6 @@
 					type="email"
 					autocomplete="username"
 					required
-					aria-describedby={validates ? `${id}-email-error` : undefined}
 				/>
 			</label>
 			{#if validates}
@@ -48,7 +49,6 @@
 					type="password"
 					autocomplete="current-password"
 					required
-					aria-describedby={validates ? `${id}-password-error` : undefined}
 				/>
 			</label>
 			{#if validates}
@@ -176,8 +176,12 @@
 				if (variant !== 'keystroke') {
 					fields.forEach(function (field) {
 						var valid = field.checkValidity();
-						document.getElementById(field.id + '-error').hidden = valid;
+						var error = document.getElementById(field.id + '-error');
+						error.hidden = valid;
 						field.setAttribute('aria-invalid', String(!valid));
+						// A description pointing at a hidden element is still read out
+						if (valid) field.removeAttribute('aria-describedby');
+						else field.setAttribute('aria-describedby', error.id);
 						if (!valid && !firstInvalid) firstInvalid = field;
 					});
 				}
