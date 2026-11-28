@@ -16,6 +16,23 @@
 			document.documentElement.classList.add('js');
 		</script>
 
+		<!-- CSR is off, so every link is a full page load. Fetching a page's HTML when the reader is
+		     likely to follow its link hides most of its latency. Prefetch, not prerender: a
+		     prerendered page runs its scripts, so Matomo would count views nobody saw. The feed and
+		     the Markdown copies aren't pages to navigate to. -->
+		<script type="speculationrules">
+			{
+				"prefetch": [
+					{
+						"where": {
+							"and": [{ "href_matches": "/*" }, { "not": { "href_matches": ["/*.xml", "/*.md"] } }]
+						},
+						"eagerness": "moderate"
+					}
+				]
+			}
+		</script>
+
 		%sveltekit.head%
 	</head>
 
