@@ -146,7 +146,9 @@ WCAG 2.2 AA is the minimum.
 
 - **Every behavior change gets a test at the right level:** logic in
   `src/**/*.spec.ts`, components in `*.svelte.spec.ts`, inline-script and cross-page
-  behavior in `e2e/`. Component tests can't run inline scripts.
+  behavior in `e2e/`. A component mount does run inline scripts, but on client-rendered
+  markup with no `app.html` (so no `.js` class), and the test only sees the markup after
+  the script changed it. Only e2e loads the prerendered HTML a visitor gets.
 - **Mutation-check every new test.** Break the code it covers (revert the fix, flip a
   condition, change a limit), run the test and confirm it fails for the right reason, then
   restore the code and confirm it passes. Report the result.

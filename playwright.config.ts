@@ -4,8 +4,8 @@ import { e2ePort } from './src/lib/e2e-port.ts';
 // The config's directory, not the cwd, so the port doesn't depend on where Playwright starts.
 const port = e2ePort(import.meta.dirname);
 
-// Runs against the built site: csr is off, so behavior lives in inline scripts that component
-// tests can't execute.
+// Runs against the built site: csr is off, so behavior lives in inline scripts, and only the
+// built site runs them on the prerendered HTML a visitor gets.
 export default defineConfig({
 	testDir: 'e2e',
 	// Screenshots only match inside the Playwright Docker image (see playwright.visual.config.ts).

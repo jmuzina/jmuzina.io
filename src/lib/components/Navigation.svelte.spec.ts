@@ -7,9 +7,9 @@ vi.mock('$app/state', () => appState);
 
 const setPath = (path: string) => (appState.page.url = new URL(path, 'http://localhost'));
 
-// csr is disabled, so the toggle is an inline script. Scripts mounted by Svelte don't run, so
-// replay the rendered markup in a same-origin iframe (as in privacy/page.svelte.spec.ts), with
-// the `js` class app.html would set.
+// csr is disabled, so the toggle is an inline script. Svelte runs it on mount, but the test page
+// has no `js` class and the script's document listeners outlive each test, so replay the rendered
+// markup in a same-origin iframe (as in privacy/page.svelte.spec.ts) with the class app.html sets.
 async function mountInFrame() {
 	const { container } = await render(Navigation);
 	const frame = document.createElement('iframe');
