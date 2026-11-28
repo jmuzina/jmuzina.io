@@ -6,7 +6,7 @@ pnpm_version=$1
 shift
 cd / && npm install --global --silent "pnpm@$pnpm_version"
 mkdir /work && cd /work
-tar -C /host -c --exclude=./.git --exclude=./node_modules --exclude=./build \
+tar -C /host -c --exclude=./.git --exclude=./.claude --exclude=./node_modules --exclude=./build \
 	--exclude=./.svelte-kit --exclude=./test-results --exclude=./playwright-report . | tar -x
 pnpm install --frozen-lockfile
 status=0
