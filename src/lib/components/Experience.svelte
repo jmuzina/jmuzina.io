@@ -39,7 +39,7 @@
 			startDate: new Date('2023-11-20'),
 			endDate: new Date('2024-04-23'),
 			description:
-				'Modernized and enhanced product inventory web applications used by <a href="https://www.sherwin-williams.com/" rel="noopener" target="_blank">Sherwin-Williams</a>\' global salesforce.'
+				'Modernized and enhanced product inventory web applications used by <a href="https://www.sherwin-williams.com/" rel="noopener" target="_blank">Sherwin-Williams</a>\' global sales force.'
 		},
 		{
 			company: 'Comsat Architects',
