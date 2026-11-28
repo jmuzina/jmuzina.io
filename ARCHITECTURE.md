@@ -55,7 +55,8 @@ src/
 e2e/                       Playwright tests, uses sitemap to find routes to test automatically
 └── visual.spec.ts-snapshots/   screenshot baselines
 scripts/
-└── e2e-visual.sh          runs the visual tests in the Playwright Docker image
+├── e2e-visual.sh          runs the visual tests in the Playwright Docker image
+└── e2e-visual-container.sh   the part of e2e-visual.sh that runs inside the container
 ```
 
 ## Deployment
