@@ -1,6 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = 4173;
+// E2E_PORT lets worktrees run e2e side by side; on a shared port one would reuse the other's server
+// and test the wrong build.
+const port = Number(process.env.E2E_PORT || 4173);
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+	throw new Error(`E2E_PORT must be a port number, got "${process.env.E2E_PORT}".`);
+}
 
 // Runs against the built site: csr is off, so behavior lives in inline scripts that component
 // tests can't execute.

@@ -46,6 +46,9 @@ pnpm build           # prerender to build/; fails on broken internal links
 New scripts follow `task`, `task:scope`, `task:mode` (e.g. `test:unit:watch`), and scripts
 call each other with `pnpm run`.
 
+`test:e2e` serves the build on port 4173 and reuses a server already there. Set `E2E_PORT` to
+a free port when another checkout may be running e2e.
+
 Browser tests and `test:e2e` bind local ports. If they fail with EPERM, report the sandbox
 restriction. Don't skip them.
 
