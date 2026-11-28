@@ -46,8 +46,8 @@ pnpm build           # prerender to build/; fails on broken internal links
 New scripts follow `task`, `task:scope`, `task:mode` (e.g. `test:unit:watch`), and scripts
 call each other with `pnpm run`.
 
-`test:e2e` serves the build on port 4173 and reuses a server already there. Set `E2E_PORT` to
-a free port when another checkout may be running e2e. When several suites share the machine,
+`test:e2e` serves the build on a port derived from the checkout's path and fails if something
+already listens there. Set `E2E_PORT` to pick another port. When several suites share the machine,
 also run `pnpm test --maxWorkers 2` and `pnpm test:e2e --workers 2`: CPU contention makes
 Firefox, axe and `userEvent` tests (and the e2e build) time out. Rerun a timeout under that load
 with fewer workers before calling it a failure.

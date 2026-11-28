@@ -1,11 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import { e2ePort } from './src/lib/e2e-port.ts';
 
-// E2E_PORT lets worktrees run e2e side by side; on a shared port one would reuse the other's server
-// and test the wrong build.
-const port = Number(process.env.E2E_PORT || 4173);
-if (!Number.isInteger(port) || port < 1 || port > 65535) {
-	throw new Error(`E2E_PORT must be a port number, got "${process.env.E2E_PORT}".`);
-}
+// The config's directory, not the cwd, so the port doesn't depend on where Playwright starts.
+const port = e2ePort(import.meta.dirname);
 
 // Runs against the built site: csr is off, so behavior lives in inline scripts that component
 // tests can't execute.
@@ -24,7 +21,9 @@ export default defineConfig({
 	webServer: {
 		command: `pnpm run build && pnpm run preview --port ${port} --strictPort`,
 		url: `http://localhost:${port}`,
-		reuseExistingServer: !process.env.CI,
+		// A server already on the port may be stale or another checkout's, so fail instead of
+		// testing it.
+		reuseExistingServer: false,
 		timeout: 120_000
 	},
 	projects: [
