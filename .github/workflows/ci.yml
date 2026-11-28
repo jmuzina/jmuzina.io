@@ -32,7 +32,6 @@ jobs:
         uses: pnpm/setup@v2
         with:
           runtime: node@${{ matrix.node }}
-          version: 12.4.1
           install: false # We'll try fetching from cache first.
 
       - name: Get pnpm store directory
@@ -113,7 +112,6 @@ jobs:
       - uses: pnpm/setup@v2
         with:
           runtime: node@${{ matrix.node }}
-          version: 12.4.1
           install: false # (its in the cache)
 
       - name: Cache Playwright browsers
@@ -152,7 +150,6 @@ jobs:
       - uses: pnpm/setup@v2
         with:
           runtime: node@26
-          version: 12.4.1
           install: false
 
       - name: Run visual tests
