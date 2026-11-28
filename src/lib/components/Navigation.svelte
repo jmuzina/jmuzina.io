@@ -26,11 +26,12 @@
 
 	{#if navRoutes.length}
 		<!-- csr is off, so the inline script below drives this. Without JS it stays hidden and the
-		     links show. -->
+		     links show. `hidden`, not just CSS, so tools that read the HTML without styles skip it. -->
 		<button
 			aria-controls="main-nav"
 			aria-expanded="false"
 			class="peer group ml-auto hidden js:max-md:inline-flex cursor-pointer rounded-md p-2.5 text-brand-light dark:text-brand-dark hover:text-secondary-900 dark:hover:text-secondary-100 focus-ring"
+			hidden
 			id="nav-toggle"
 			type="button"
 		>
@@ -69,6 +70,7 @@
 			(function () {
 				var button = document.getElementById('nav-toggle');
 				var nav = document.getElementById('main-nav');
+				button.hidden = false;
 				var isOpen = function () {
 					return button.getAttribute('aria-expanded') === 'true';
 				};
