@@ -55,12 +55,41 @@ don't starve each other. **A timeout is a failure.** Report it with its output l
 Don't rerun until it passes, and don't raise a timeout or the worker count to get green. If
 you think load caused it, say what else was running.
 
-Browser tests and `test:e2e` bind local ports. If they fail with EPERM, report the sandbox
-restriction. Don't skip them.
+## Sandbox and environment
 
-`pnpm install`, `--offline` included, fails in a sandbox that can't write the shared pnpm
-store. Run it outside the sandbox, including in a new worktree. Keeping the store out of
-the sandbox is deliberate, so don't report this as friction.
+Commands run in a sandbox. Leave it only for the steps below that can't run inside it, one
+command at a time, and never to get past a failure you haven't diagnosed.
+
+- **Tests bind local ports.** `.claude/settings.json` allows that, so browser tests and
+  `test:e2e` run sandboxed. If one fails with EPERM, report the sandbox restriction. Don't
+  skip it.
+- **Install outside the sandbox, without scripts.** `pnpm install` writes the shared pnpm
+  store, which stays out of the sandbox on purpose, so don't report this as friction. Run
+  `pnpm install --frozen-lockfile --ignore-scripts` unsandboxed, then `pnpm run prepare`
+  sandboxed. A new worktree has no `node_modules`, so it needs this first. Without
+  `--ignore-scripts`, install runs `prepare` (`svelte-kit sync`), which loads
+  `vite.config.ts` and code under `src/`: working-tree code would run outside the sandbox.
+- **Node 26.10 is pinned** (`devEngines`). With another Node on `PATH`, pnpm downloads 26.10.
+  Use `pnpm exec`, not `npx`, which runs the system Node.
+- **Don't hunt for or kill processes.** A sandboxed command can't see or signal processes it
+  didn't start. Playwright starts and stops its own preview server and fails rather than
+  reuse one, so a busy port means another checkout's run: set `E2E_PORT` or report it.
+- **Visual baselines come from CI.** `pnpm test:e2e:visual` needs Docker, which the sandbox
+  can't reach. Don't leave the sandbox for it. When screenshots differ, CI's visual job
+  uploads the updated baselines as the `visual-baselines` artifact. With Julie's approval
+  to push, fetch them with
+  `gh run download <run-id> -n visual-baselines -D e2e/visual.spec.ts-snapshots`, check
+  them against the `visual-diff` report and commit them. Running it locally on Apple
+  Silicon needs Docker Desktop's Rosetta setting: Chromium crashes under QEMU.
+- **Temp files:** `$TMPDIR` differs between sandboxed and unsandboxed commands. When a task
+  mixes both, share files through the absolute path of the session scratchpad.
+- **Worktrees:** use Claude Code's built-in ones (`.claude/worktrees/<name>/`). They branch
+  from the current `HEAD` (`worktree.baseRef` in `.claude/settings.json`), and the sandbox
+  lets the session write them. A worktree made with plain `git worktree add` isn't the
+  session's own, so its git writes need unsandboxed commands.
+- **Commits are GPG-signed**, and `gpg` can't reach its agent from the sandbox. When asked
+  to commit, run `git commit` unsandboxed. If `pinentry` prompts, stop and ask Julie to
+  unlock `gpg-agent`. Don't turn signing off unless she says so.
 
 ## How to work
 
