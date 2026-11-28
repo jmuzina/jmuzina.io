@@ -1,10 +1,21 @@
 {
 	"permissions": {
 		"ask": [
-			"Bash(git commit)",
 			"Bash(git commit *)",
-			"Bash(git push)",
+			"Bash(git * commit)",
+			"Bash(git * commit *)",
+			"Bash(git commit-tree *)",
+			"Bash(git * commit-tree *)",
+			"Bash(git update-ref *)",
+			"Bash(git * update-ref *)",
 			"Bash(git push *)",
+			"Bash(git * push)",
+			"Bash(git * push *)",
+			"Bash(*/git *)",
+			"Bash(sh -c *)",
+			"Bash(bash -c *)",
+			"Bash(zsh -c *)",
+			"Bash(eval *)",
 			"Bash(pnpm add *)",
 			"Edit(/.github/workflows/**)",
 			"Edit(/package.json)",
@@ -12,6 +23,9 @@
 		]
 	},
 	"sandbox": {
+		"filesystem": {
+			"denyWrite": ["./.github/workflows", "./package.json", "./pnpm-lock.yaml"]
+		},
 		"network": {
 			"allowLocalBinding": true
 		}
