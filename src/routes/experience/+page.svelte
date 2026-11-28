@@ -2,7 +2,7 @@
 	import { Experience } from '#lib/components/index.ts';
 	const title = 'Experience | Julie Mužina';
 	const description =
-		'Profesional & Academic history of Julie Mužina (currently a software engineer at Canonical).';
+		'Professional & Academic history of Julie Mužina (currently a software engineer at Canonical).';
 </script>
 
 <svelte:head>
