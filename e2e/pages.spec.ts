@@ -71,7 +71,7 @@ test.describe('blog posts', () => {
 		await expect(heading).toBeInViewport();
 
 		if (browserName === 'chromium') {
-			await expect(page.getByRole('status')).toHaveText('Link to section copied');
+			await expect(page.locator('#heading-link-status')).toHaveText('Link to section copied');
 			expect(await page.evaluate(() => navigator.clipboard.readText())).toMatch(
 				new RegExp(`${path}#${id}$`)
 			);

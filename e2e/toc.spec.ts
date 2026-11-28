@@ -234,7 +234,8 @@ test.describe('small screens', () => {
 
 	test('is named "On this page" whatever section is shown', async ({ page }) => {
 		await page.goto(postPath!);
-		await page.evaluate(() => window.scrollBy(0, 1500));
+		// not a fixed distance: a long intro would leave no section shown yet
+		await page.locator('article h2').last().scrollIntoViewIfNeeded();
 		await expect(page.locator('.toc-current')).not.toBeEmpty();
 		// the current-section text is decorative, so the toggle's name doesn't change
 		await expect(mobileSummary(page)).toHaveAccessibleName('On this page');
@@ -291,17 +292,25 @@ test.describe('small screens', () => {
 		]) {
 			for (let presses = 0; presses < 300; presses++) {
 				await page.keyboard.press(key);
-				const focus = await page.evaluate((mark) => {
+				const focus = await page.evaluate(async (mark) => {
 					const el = document.activeElement;
 					// past either end of the page, or wrapped round to a stop already checked
 					if (!el || el === document.body || el.hasAttribute(mark)) return null;
 					el.setAttribute(mark, '');
 					const bar = document.querySelector('.toc-mobile')!;
-					const a = el.getBoundingClientRect();
-					const b = bar.getBoundingClientRect();
-					const overlaps =
-						a.top < b.bottom && a.bottom > b.top && a.left < b.right && a.right > b.left;
-					return { name: el.outerHTML.slice(0, 80), covered: overlaps && !bar.contains(el) };
+					const covered = () => {
+						const a = el.getBoundingClientRect();
+						const b = bar.getBoundingClientRect();
+						const overlaps =
+							a.top < b.bottom && a.bottom > b.top && a.left < b.right && a.right > b.left;
+						return overlaps && !bar.contains(el);
+					};
+					// WebKit scrolls a focused text field into view after the focus event, not with it
+					const deadline = performance.now() + 500;
+					while (covered() && performance.now() < deadline) {
+						await new Promise(requestAnimationFrame);
+					}
+					return { name: el.outerHTML.slice(0, 80), covered: covered() };
 				}, `data-tabbed-${direction}`);
 				if (!focus) break;
 				if (focus.covered) covered.push(`${direction}: ${focus.name}`);

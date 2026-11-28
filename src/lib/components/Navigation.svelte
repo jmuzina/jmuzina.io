@@ -30,7 +30,7 @@
 		<button
 			aria-controls="main-nav"
 			aria-expanded="false"
-			class="peer group ml-auto hidden js:max-md:inline-flex cursor-pointer rounded-md p-2.5 text-brand-light dark:text-brand-dark hover:text-secondary-900 dark:hover:text-secondary-100 outline-solid outline-1 outline-offset-1 outline-primary-700-300 not-focus-visible:outline-hidden"
+			class="peer group ml-auto hidden js:max-md:inline-flex cursor-pointer rounded-md p-2.5 text-brand-light dark:text-brand-dark hover:text-secondary-900 dark:hover:text-secondary-100 focus-ring"
 			id="nav-toggle"
 			type="button"
 		>

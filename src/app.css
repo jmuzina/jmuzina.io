@@ -13,6 +13,23 @@
    (WCAG 1.4.10). */
 @custom-variant tall (@media (min-height: 32rem));
 
+/* One focus ring for links and controls, so keyboard focus looks the same everywhere. */
+@utility focus-ring {
+	@apply outline-solid outline-1 outline-offset-1 outline-primary-700-300 not-focus-visible:outline-hidden;
+}
+
+/* Skeleton's buttons fall back to the browser's ring, and its fields only recolor their edge. */
+@utility btn {
+	@apply focus-ring;
+}
+
+/* The ring is the field's only edge, and Skeleton's shade is below 3:1 against the page in
+   both schemes (WCAG 1.4.11). */
+@utility input {
+	@apply focus-ring;
+	--tw-ring-color: var(--color-surface-600-400);
+}
+
 @layer base {
 	html {
 		@media (min-width: 1024px) {
@@ -22,13 +39,19 @@
 
 	a {
 		@apply hover:underline;
-		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border not-focus-visible:outline-hidden outline-solid outline-primary-700-300 outline-1 outline-offset-1 rounded-md;
+		@apply text-brand-light dark:text-brand-dark visited:text-tertiary-700 dark:visited:text-tertiary-300 hover:text-secondary-900 dark:hover:text-secondary-100 box-border focus-ring rounded-md;
 	}
 
 	/* exempt header and nav links from visited/hover colors (its distracting and i feel visited colors are only really necessary for links in non-navigational copy) */
 	header a,
 	nav a {
 		@apply visited:text-brand-light dark:visited:text-brand-dark hover:text-secondary-900 dark:hover:text-secondary-100;
+	}
+
+	/* Skeleton tints <code> with the brand color, and code in a link takes the link's color, so
+	   the text would sit on its own tint (below 4.5:1 in dark mode). */
+	a code {
+		@apply bg-transparent;
 	}
 
 	/* Links inline with other text need a non-color cue to be distinguishable (WCAG 1.4.1). */

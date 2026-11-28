@@ -114,7 +114,7 @@ test('Tab reaches everything on every page and always shows where focus is', asy
 			let leftPage = false;
 			for (let presses = 0; presses <= expected.length + 20; presses++) {
 				await page.keyboard.press(tabKey(browserName));
-				const focus = await page.evaluate(() => {
+				const focus = await page.evaluate(async () => {
 					const el = document.activeElement;
 					// back at the start: past the last stop, or wrapped round to the first
 					if (!el || el === document.body || el.hasAttribute('data-tabbed')) return null;
@@ -122,11 +122,19 @@ test('Tab reaches everything on every page and always shows where focus is', asy
 					const cs = getComputedStyle(el);
 					const transparent = /rgba\(0, 0, 0, 0\)|transparent|\/ 0\)$/.test(cs.outlineColor);
 					const outline = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0;
-					const r = el.getBoundingClientRect();
+					const inView = () => {
+						const r = el.getBoundingClientRect();
+						return r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < innerHeight;
+					};
+					// WebKit scrolls a focused text field into view after the focus event, not with it
+					const deadline = performance.now() + 500;
+					while (!inView() && performance.now() < deadline) {
+						await new Promise(requestAnimationFrame);
+					}
 					return {
 						name: el.outerHTML.slice(0, 80),
 						indicator: (outline && !transparent) || cs.boxShadow !== 'none',
-						inView: r.width > 1 && r.height > 1 && r.bottom > 0 && r.top < innerHeight
+						inView: inView()
 					};
 				});
 				if (!focus) {
