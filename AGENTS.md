@@ -39,6 +39,7 @@ pnpm lint:build      # vale, with spelling, on the built HTML (after build); CI 
 pnpm lint:fix        # fix what the linters can
 pnpm fix             # lint:fix, then check + lint to report what's left
 pnpm test            # test:unit (node) + test:component (in Chromium, Firefox, WebKit)
+pnpm exec vitest run <file>  # one spec; vitest.config.ts runs it in Node or the browsers
 pnpm test:e2e        # playwright against the built site; first: pnpm exec playwright install chromium firefox webkit
 pnpm test:e2e:visual # screenshot diffs in the Playwright Docker image; :update rewrites baselines
 pnpm build           # prerender to build/; fails on broken internal links
