@@ -1,6 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-// import storybook from 'eslint-plugin-storybook';
-
 import prettier from 'eslint-config-prettier';
 import path from 'node:path';
 import { includeIgnoreFile } from '@eslint/compat';
@@ -14,17 +11,12 @@ import { loadConfig } from '@sveltejs/load-config';
 const svelteConfig = (await loadConfig('./', { traverse: false }))?.config;
 
 const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
-// const compat = new FlatCompat({
-// 	baseDirectory: import.meta.dirname,
-// 	resolvePluginsRelativeTo: import.meta.dirname
-// });
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
 	js.configs.recommended,
 	...ts.configs.recommended,
 	svelte.configs.recommended,
-	// ...compat.config(storybook.configs.recommended),
 	prettier,
 	...svelte.configs.prettier,
 	{
