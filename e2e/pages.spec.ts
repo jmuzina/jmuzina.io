@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { getPagePaths, tabKey } from './helpers';
+import { expectSiteFocusRing, getPagePaths, getSiteFocusRing, tabKey } from './helpers';
 
 test('every page has one title and one h1, inside main', async ({ page, request }) => {
 	for (const path of await getPagePaths(request)) {
@@ -94,7 +94,7 @@ test.describe('blog posts', () => {
 			await page.keyboard.press(tabKey(browserName));
 		}
 		await expect(link).toBeFocused();
-		await expect(link).not.toHaveCSS('outline-style', 'none');
+		await expectSiteFocusRing(link, await getSiteFocusRing(page));
 		await expect(link.locator('span[aria-hidden="true"]')).toHaveCSS('opacity', '1');
 	});
 

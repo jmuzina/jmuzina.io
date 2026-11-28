@@ -30,10 +30,11 @@
 	--tw-ring-color: var(--color-surface-600-400);
 }
 
-/* Not in `base`: preflight's `:-moz-focusring { outline: auto }` is there too and outranks a bare
-   `a`, so Firefox drew its own ring. Utilities still override it. */
+/* The site ring for anything keyboard-focused. In `base`, preflight's `:-moz-focusring
+   { outline: auto }` beats a less specific selector, so Firefox drew its own ring on links. Here
+   it always wins, and utilities still override it. */
 @layer components {
-	a {
+	:focus-visible {
 		@apply focus-ring;
 	}
 }

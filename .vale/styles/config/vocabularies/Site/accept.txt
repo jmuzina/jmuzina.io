@@ -5,5 +5,6 @@ cookieless
 Lucide
 Matomo
 mdsvex
+(?i)preflight
 prerendered
 px

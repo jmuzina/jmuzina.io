@@ -60,17 +60,26 @@ describe.each(['light', 'dark'] as const)('form controls (%s)', (colorScheme) =>
 	it('fields and buttons show the link focus ring, only when focused by keyboard', async () => {
 		const link = document.querySelector('a')!;
 		const controls = [document.querySelector('.input')!, document.querySelector('.btn')!];
+		// Safari only Tabs to links and buttons with Option held
+		const press = (keys: string) =>
+			userEvent.keyboard(server.browser === 'webkit' ? `{Alt>}${keys}{/Alt}` : keys);
 		for (const control of controls) {
-			expect(ring(control)).toEqual(ring(link));
 			expect(getComputedStyle(control).outlineStyle).toBe('none');
 		}
 
 		await userEvent.click(link);
+		const rings = [];
 		for (const control of controls) {
-			// Safari only Tabs to buttons with Option held
-			await userEvent.keyboard(server.browser === 'webkit' ? '{Alt>}{Tab}{/Alt}' : '{Tab}');
+			await press('{Tab}');
 			expect(document.activeElement).toBe(control);
 			expect(getComputedStyle(control).outlineStyle).toBe('solid');
+			rings.push(ring(control));
 		}
+
+		// back to the link by keyboard, so it shows its ring too
+		for (let i = 0; i < controls.length; i++) await press('{Shift>}{Tab}{/Shift}');
+		expect(document.activeElement).toBe(link);
+		expect(getComputedStyle(link).outlineStyle).toBe('solid');
+		for (const controlRing of rings) expect(controlRing).toEqual(ring(link));
 	});
 });

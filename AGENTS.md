@@ -119,6 +119,9 @@ WCAG 2.2 AA is the minimum.
 - **Keyboard first.** Everything is operable by keyboard with a visible focus ring (reuse
   the link style). Escape closes a disclosure only when focus is inside it, then returns
   focus to its toggle.
+- **The focus ring is a default in `@layer components`**, not `base`, where preflight's
+  `:-moz-focusring { outline: auto }` can win in Firefox. The Tab test in `e2e/a11y.spec.ts`
+  fails any other ring that isn't on its allowlist.
 - **Real names, roles and states.** Native elements first. Toggles get
   `aria-expanded`/`aria-controls` and a stable accessible name. Use `aria-current` for
   "you are here". Decorative icons get `aria-hidden="true"`. No `role="menu"` on
