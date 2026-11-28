@@ -8,8 +8,8 @@ before acting.
 - [ARCHITECTURE.md](ARCHITECTURE.md): stack, code layout, deploys.
 - The files you'll change and their tests. Check `src/lib/` for an existing helper before
   writing one.
-- Skills live in `.github/skills/`. To review a change, follow
-  [code-review](.github/skills/code-review/SKILL.md).
+- Skills live in `.github/skills/`, each linked from `.claude/skills/` for Claude Code. To
+  review a change, follow [code-review](.github/skills/code-review/SKILL.md).
 
 ## Invariants
 
@@ -80,7 +80,8 @@ the sandbox is deliberate, so don't report this as friction.
   and mobile. Report failures and skipped steps. Never weaken or delete a test to make it
   pass.
 - **Ask before anything hard to undo:** new dependencies, deleting files, CI or deploy
-  changes, commits, pushes.
+  changes, commits, pushes. `.claude/settings.json` prompts for commits, pushes,
+  `pnpm add` and edits to CI, `package.json` and the lockfile; the rest is on you.
 
 ## Architecture
 
