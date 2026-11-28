@@ -38,8 +38,8 @@
 			</p>
 			<p>
 				I started out modding games, found my way to building websites for the communities around
-				them, and now write software for a living. Lately I'm getting back into building things just
-				for fun, starting with this (a new personal site, from the ground-up!).
+				them, now as a software engineer at Canonical. Lately I'm getting back into building things
+				just for fun, starting with this (a new personal site, from the ground-up!).
 			</p>
 			<!-- Swap to "More about me" (/about) when ready -->
 			<a
