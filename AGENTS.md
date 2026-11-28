@@ -112,8 +112,9 @@ command at a time, and never to get past a failure you haven't diagnosed.
   and mobile. Report failures and skipped steps. Never weaken or delete a test to make it
   pass.
 - **Ask before anything hard to undo:** new dependencies, deleting files, CI or deploy
-  changes, commits, pushes. `.claude/settings.json` prompts for commits, pushes, `pnpm add`
-  and file edits to CI, `package.json` and the lockfile, and sandboxed commands can't write
+  changes, commits, pushes. `.claude/settings.json` prompts for commits, pushes, `pnpm add`,
+  GitHub writes through `gh` (PRs, issues, runs, `gh api`) and file edits to CI,
+  `package.json` and the lockfile, and sandboxed commands can't write
   those files (so `pnpm lint:fix` can't fix them: apply what `pnpm lint` reports with the
   Edit tool). These catch the usual forms, not every one, so the rule is still yours to keep.
 
