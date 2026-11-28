@@ -16,9 +16,10 @@ export default defineConfig({
 	...base,
 	testMatch: '**/visual.spec.ts',
 	testIgnore: [],
-	// The default per-pixel threshold lets a one-shade color change pass. The image pins
-	// rendering, so there's no noise to tolerate.
-	expect: { toHaveScreenshot: { threshold: 0 } },
+	// The default per-pixel threshold (0.2) lets a one-shade color change pass. Even in the
+	// pinned image, Chromium shades dotted underlines differently on some launches (gray 128 vs
+	// 123); those pairs match from 0.023. 0.03 absorbs that and still fails a one-step token change.
+	expect: { toHaveScreenshot: { threshold: 0.03 } },
 	reporter: [[process.env.CI ? 'github' : 'list'], ['html', { open: 'never' }]],
 	projects: [
 		{ name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },
