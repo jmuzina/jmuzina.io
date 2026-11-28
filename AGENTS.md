@@ -35,6 +35,7 @@ No change may give these up.
 pnpm dev             # dev server
 pnpm check           # svelte-kit sync + svelte-check + tsc; must pass
 pnpm lint            # prettier, eslint, markdownlint-cli2, vale; CI runs this
+pnpm lint:build      # vale, with spelling, on the built HTML (after build); CI runs this
 pnpm lint:fix        # fix what the linters can
 pnpm fix             # lint:fix, then check + lint to report what's left
 pnpm test            # test:unit (node) + test:component (in Chromium, Firefox, WebKit)
