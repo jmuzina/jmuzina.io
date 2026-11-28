@@ -93,7 +93,8 @@ step to work around.
 - **Worktrees:** use Claude Code's built-in ones (`.claude/worktrees/<name>/`). They branch
   from the current `HEAD` (`worktree.baseRef` in `.claude/settings.json`), and the sandbox
   lets the session write them. Plain `git worktree add` can't run: the sandbox keeps
-  `.git/worktrees` read-only. `git worktree remove` is excluded.
+  `.git/worktrees` read-only. `git worktree remove` is excluded, for removing a worktree
+  once Julie approves its work (see [Git](#git)).
 - **Commit unsigned.** Julie signs her own commits with GPG, but `gpg` can't reach its agent
   from the sandbox. When asked to commit, use `git -c commit.gpgsign=false commit`, and
   `git rebase --no-gpg-sign` for a rebase, because `-c commit.gpgsign=false` doesn't reach
@@ -249,3 +250,15 @@ spell-checks Markdown: fix real typos, and add genuine terms (product names, jar
   a body that explains why. Julie's own commits may have none.
 - **No co-author trailers.** Never add `Co-Authored-By` or any other attribution line to a
   commit message.
+- **A worktree task ends in a commit, and the worktree stays until Julie approves it.**
+  When Julie asks for work in a worktree, that request is also the ask to commit:
+  1. Make a built-in worktree. It starts from the current `HEAD`; if the task names another
+     base (`dev` when none is named), run `git reset --hard <base>` in the new worktree
+     before any work.
+  2. Do and verify the work there. Leave the main checkout alone: don't switch its branch or
+     change its files, because another session may be using it.
+  3. Commit unsigned on the worktree's branch (see
+     [Sandbox and environment](#sandbox-and-environment)). Don't push.
+  4. Keep the worktree, so Julie can review and run the work in it. Only after she says the
+     work is OK, remove it with `git worktree remove <path>`. That keeps the branch, which
+     she can then check out in the main checkout. Never delete the branch.
